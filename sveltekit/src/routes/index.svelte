@@ -8,7 +8,7 @@
 </svelte:head>
 
 <section>
-    Wellcome
+    Welcome
 </section>
 
 <style>
