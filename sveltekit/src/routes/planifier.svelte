@@ -1,34 +1,28 @@
-<script lang="ts">
+<script type="ts">
 	import Autocomplete from '@smui-extra/autocomplete';
+	import {onMount} from 'svelte'
 	import Card, { Content } from '@smui/card';
 	let fruits = ['Apple', 'Orange', 'Banana', 'Mango'];
 	let valueStart: string | undefined = undefined;
 	let valueEnd: string | undefined = undefined;
+
+	import Map from "$lib/map/Map.svelte"
 	 
-	// var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
- 
-	// mapboxgl.accessToken = 'pk.eyJ1Ijoic3dlLWpvZWUiLCJhIjoiY2wzMnFlcXo1MDBsNTNjcXNpa3JrdzByZSJ9._H6XTxj4p2OFQ2DGMKENdw';
-	// 	var map = new mapboxgl.Map({
-	// 	container: 'map',
-	// 	style: 'mapbox://styles/mapbox/streets-v11'
-	// });
+	
+	import mapboxgl from 'mapbox-gl/dist/mapbox-gl'
+	mapboxgl.accessToken = 'pk.eyJ1Ijoic3dlLWpvZWUiLCJhIjoiY2wzMnFlcXo1MDBsNTNjcXNpa3JrdzByZSJ9._H6XTxj4p2OFQ2DGMKENdw';
+
+	onMount(() => {
+        var map = new mapboxgl.Map({
+			container: 'map',
+			style: 'mapbox://styles/mapbox/streets-v11'
+		});
+    });
 	
 </script>
 
 <svelte:head>
-	<script src='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js'></script>
 	<link href='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css' rel='stylesheet' />
-	<div id='map' style='width: 400px; height: 300px;'></div>
-	<!-- MapBox -->
-	<link href='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css' rel='stylesheet' />
-	<script src='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js'></script>
-	<script>
-		mapboxgl.accessToken = 'pk.eyJ1Ijoic3dlLWpvZWUiLCJhIjoiY2wzMnFlcXo1MDBsNTNjcXNpa3JrdzByZSJ9._H6XTxj4p2OFQ2DGMKENdw';
-		var map = new mapboxgl.Map({
-		container: 'map',
-		style: 'mapbox://styles/mapbox/streets-v11'
-		});
-	</script>
 </svelte:head>
 
 <div class="columns margins">
@@ -48,9 +42,10 @@
 						bind:value={valueEnd}
 						label="Arriver"
 					/>
-					<div id='map'></div>
+					
 				</div>
-				
+				<!-- <div id='map' style='width: 100%; height: 300px;'></div> -->
+				<Map></Map>
 			</Card>
 			
 		</div>
@@ -65,6 +60,7 @@
 	.card{
 		display: flex;
 		justify-content: space-between;
+		height: 100%;
 	}
 	
 </style>
