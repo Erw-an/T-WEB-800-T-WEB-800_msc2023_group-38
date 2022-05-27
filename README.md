@@ -1,6 +1,6 @@
-# ???
+# epitech-epic-roadtrip
 
-"???" is a web application for people who want to enjoy their vacations. 
+epitech-epic-roadtrip is a web application for people who want to enjoy their vacations. 
 Whether you are looking for a restaurant or an activity for your trip, everything is on "???"!
 
 ## 👥 Members
@@ -59,3 +59,6 @@ For API project:
 - Run `npm run lint` to conform to our lint rules
 
 ## 🗃️ Resources
+
+## Trello
+https://trello.com/b/oaSjcFtH/roadtrip
