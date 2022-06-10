@@ -7,7 +7,7 @@
 	let valueStart: string | undefined = undefined;
 	let valueEnd: string | undefined = undefined;
 
-	import Map from "$lib/map/Map.svelte"
+	import Map from "$lib/map/Map2.svelte"
 	 
 	
 	import mapboxgl from 'mapbox-gl'
@@ -28,12 +28,11 @@
 	<link href='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css' rel='stylesheet' />
 </svelte:head>
 
-<div class="columns margins">
-	<div class="p-12 bg-red-200">test</div>
+
 	<div class="container">
-		<div class="card-container">
-			<Card>
-				<div class="card">
+		
+			
+				<!-- <div class="card">
 					<Autocomplete
 						options={fruits}
 						textfield$variant="outlined"
@@ -47,23 +46,16 @@
 						label="Arriver"
 					/>
 					
-				</div>
+				</div> -->
+				
 
-				<div class="map" style='width: 100%; height: 300px;'>
+				<div class="map" style='width: 100%; height: 100%;'>
+					<!-- <div class="top-map"></div> -->
 					<Map></Map>
 				</div>
-				
-				
-			</Card>
 
-			
-			
-
-			<!-- <div id='map' style='width: 100%; height: 300px;'></div> -->
-			
-		</div>
+		
 	</div>
-</div>
 
 
 
@@ -79,6 +71,22 @@
 	.map{
 		width: 100%;
 		height: 100%;
+		background-color: azure;
+		margin-top: 250px;
+		padding-top: 250px;
+	}
+
+	.top-map{
+		margin-top: 100px;
+	}
+
+	.container{
+		width: 100%;
+		height: 100%;
+		display: flex;
+		margin-top: 250px;
+		padding-top: 250px;
+		display: flex;
 	}
 	
 </style>

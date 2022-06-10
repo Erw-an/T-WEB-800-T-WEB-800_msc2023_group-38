@@ -56,7 +56,7 @@
 
 
 <TopAppBar bind:this={topAppBar} variant="standard">
-	<Row>
+	<!-- <Row>
 	  <Section>
 		<IconButton class="material-icons">menu</IconButton>
 		<Title>RoadTriper</Title>
@@ -76,13 +76,12 @@
 	</Row>
 	<Card class='test' >
 		<TabBar {tabs} let:tab bind:active>
-			<!-- <a sveltekit:prefetch href={tab.redirect}>About</a> -->
 			<Tab class="tabs" {tab} on:click={() => redirect(tab.redirect)}>
 				<Icon class="material-icons">{tab.icon}</Icon>
 				<Label>{tab.label}</Label>
 			</Tab>
 		</TabBar>
-	</Card>
+	</Card> -->
 </TopAppBar>
    
 <style>
