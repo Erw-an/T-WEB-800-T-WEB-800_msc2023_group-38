@@ -1,3 +1,4 @@
+import { PrismaClient } from '@prisma/client';
 import { Test, TestingModule } from '@nestjs/testing';
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { AppModule } from './../src/app.module';
@@ -6,6 +7,8 @@ import { eachLike, like } from 'pactum-matchers';
 
 describe('AppController (e2e)', () => {
     let app: INestApplication;
+    const EMAIL = 'test@test.com';
+    const PASSWORD = 'test';
 
     beforeAll(async () => {
         const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -21,6 +24,43 @@ describe('AppController (e2e)', () => {
 
     afterAll(() => {
         app.close();
+    });
+
+    describe('Auth', () => {
+        describe('POST /auth/signin', () => {
+            const dto = { email: EMAIL, password: PASSWORD };
+            it('should connect to pgSql', async () => {
+                await expect(
+                    new PrismaClient().$connect(),
+                ).resolves.not.toThrow();
+            });
+
+            it('should signin', async () => {
+                return await pactum
+                    .spec()
+                    .post('/auth/signin')
+                    .withBody(dto)
+                    .expectStatus(HttpStatus.ACCEPTED);
+            });
+
+            it('should throw if no body provided', async () => {
+                return await pactum
+                    .spec()
+                    .post('/auth/signin')
+                    .expectStatus(HttpStatus.BAD_REQUEST);
+            });
+
+            it('should throw an 403 if credentials are not valids', async () => {
+                return await pactum
+                    .spec()
+                    .post('/auth/signin')
+                    .withBody({
+                        email: `${EMAIL}aaaaaa`,
+                        password: `${PASSWORD}aaaa`,
+                    })
+                    .expectStatus(HttpStatus.FORBIDDEN);
+            });
+        });
     });
 
     describe('Geo', () => {
