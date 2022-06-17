@@ -34,28 +34,36 @@ $ npm install
 
 ## Running the app
 
+## Dev
+
 ```bash
-# development
-$ npm run start
+# start pgSql
+$ yarn db:dev:up
 
-# watch mode
-$ npm run start:dev
+# refresh pgSql
+$ yarn db:dev:refresh
 
-# production mode
-$ npm run start:prod
+# start dev app
+$ yarn start:dev
+
+# start prisma studip
+$ yarn prisma:dev:studio
 ```
 
 ## Test
 
 ```bash
+# start test app
+$ yarn start:test
+
 # unit tests
-$ npm run test
+$ yarn start:test
 
 # e2e tests
-$ npm run test:e2e
+$ yarn test:e2e
 
 # test coverage
-$ npm run test:cov
+$ yarn run test:cov
 ```
 
 ## Linting
@@ -74,9 +82,9 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+-   Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
+-   Website - [https://nestjs.com](https://nestjs.com/)
+-   Twitter - [@nestframework](https://twitter.com/nestframework)
 
 ## License
 
