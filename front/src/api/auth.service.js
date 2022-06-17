@@ -8,7 +8,7 @@ const setAuthToken = (token) => {
         sessionStorage.setItem('token', token);
     } else {
         delete axiosInstance.defaults.headers.common.Authorization;
-        localStorage.removeItem('token', token);
+        sessionStorage.removeItem('token', token);
     }
 };
 
