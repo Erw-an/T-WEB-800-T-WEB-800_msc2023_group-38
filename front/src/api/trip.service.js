@@ -39,6 +39,45 @@ const saveItinerary = async ({ itinerary }) => {
     }
 };
 
+const getItinerary = async () => {
+    try {
+        const tripId = sessionStorage.getItem('tripId');
+        const itId = sessionStorage.getItem('itineraryId');
+
+        if (!(tripId && itId)) {
+            throw new Error('Information missing');
+        }
+        const { data } = await axiosInstance.get(
+            `${BASE_URL}/${tripId}/itinerary/${itId}`,
+        );
+
+        return data;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
+const saveItineraryFile = async ({ formData }) => {
+    try {
+        const tripId = sessionStorage.getItem('tripId');
+        const itId = sessionStorage.getItem('itineraryId');
+
+        if (!(tripId && itId)) {
+            throw new Error('Information missing');
+        }
+        const { data } = await axiosInstance.patch(
+            `${BASE_URL}/${tripId}/itinerary/${itId}`,
+            formData,
+        );
+
+        return data;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
 const savePlace = async ({ content }) => {
     try {
         const tripId = sessionStorage.getItem('tripId');
@@ -57,4 +96,11 @@ const savePlace = async ({ content }) => {
     }
 };
 
-export { getTrips, createTrip, saveItinerary, savePlace };
+export {
+    getTrips,
+    createTrip,
+    saveItinerary,
+    savePlace,
+    getItinerary,
+    saveItineraryFile,
+};
