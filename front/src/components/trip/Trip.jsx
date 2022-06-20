@@ -2,6 +2,9 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 
 import api from '../../api';
+import Alerts from '../../share-components/Alerts';
+import ButtonArrow from '../../share-components/ButtonArrow';
+import Card from '../../share-components/Card';
 
 function Trip({ navigateToDestination }) {
     const [trips, setTrips] = useState([]);
@@ -12,6 +15,7 @@ function Trip({ navigateToDestination }) {
         (async () => {
             try {
                 const res = await api.tripService.getTrips();
+                console.log('res:', res);
                 setTrips(res);
             } catch (e) {
                 setError(e.message);
@@ -30,34 +34,32 @@ function Trip({ navigateToDestination }) {
             setNewTrip(null);
         }
     };
+
     return (
         <>
-            <button type="button" onClick={handleClick}>
-                Create a trip
-            </button>
+            <div className="ml-7">
+                <ButtonArrow
+                    title="Create a new trip"
+                    onClick={handleClick}
+                    outlined="true"
+                />
+            </div>
 
             {newTrip ? (
-                <>
-                    <h4>New trip created !</h4>
-                    <>
-                        <p>{newTrip.id}</p>
-                        <p>{newTrip.createdAt}</p>
-                        <p>{newTrip.updatedAt}</p>
-                    </>
-                </>
+                <Alerts
+                    title="New trip created !"
+                    desc={`Id: ${newTrip.id} Created at: ${newTrip.createdAt} Updated at: ${newTrip.updatedAt}`}
+                    type="success"
+                />
             ) : (
                 <div>
-                    <h2>Trips list :</h2>
                     {trips.length > 0 &&
                         trips.map((elem, idx) => (
-                            <div>
-                                <p>
-                                    ================================================
-                                </p>
-                                <p>Trip {idx}</p>
-                                <p>Created at :{elem.trip.createdAt}</p>
-                                <p>Updated at :{elem.trip.updatedAt}</p>
-                            </div>
+                            <Card
+                                title={idx}
+                                createdAt={elem.trip.createdAt}
+                                updatedAt={elem.trip.updatedAt}
+                            />
                         ))}
                 </div>
             )}

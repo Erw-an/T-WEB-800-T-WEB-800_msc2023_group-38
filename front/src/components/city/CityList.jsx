@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
 import api from '../../api';
 import SuggestionSearchItem from './SuggestionSearchItem';
+import InputText from '../../share-components/InputText';
 
 function CityList({
     adressStartProps,
@@ -119,11 +120,17 @@ function CityList({
     return (
         <>
             <div>
-                <h3>Start</h3>
+                {/* <h3>Start</h3>
                 <input
                     onChange={(e) => optimizedDebounceStart(e)}
                     type="text"
                     placeholder="Start destination"
+                /> */}
+
+                <InputText
+                    placeholder="Start destination"
+                    onChange={(e) => optimizedDebounceStart(e)}
+                    // value=
                 />
 
                 {suggestionsStart.length > 0 &&
@@ -145,11 +152,15 @@ function CityList({
                     ))}
             </div>
             <div>
-                <h3>End</h3>
+                {/* <h3>End</h3>
                 <input
                     onChange={(e) => optimizedDebounceEnd(e)}
                     type="text"
                     placeholder="Start destination"
+                /> */}
+                <InputText
+                    placeholder="End destination"
+                    onChange={(e) => optimizedDebounceEnd(e)}
                 />
 
                 {suggestionsEnd.length > 0 &&

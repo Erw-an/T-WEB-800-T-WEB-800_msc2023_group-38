@@ -18,6 +18,10 @@ export class AuthService {
             where: { email: dto.email },
         });
 
+        var salt = bcrypt.genSaltSync(10);
+        var hash = bcrypt.hashSync(dto.password, salt);
+        console.log('hash:', hash);
+
         if (!user) {
             throw new ForbiddenException('Credentials incorrect');
         }

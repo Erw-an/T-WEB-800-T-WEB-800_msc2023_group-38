@@ -1,9 +1,11 @@
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import React, { useState } from 'react';
 import Planner from './components/planner/Planner';
 import CityList from './components/city/CityList';
 import LogIn from './components/auth/LogIn';
+import './index.css';
 import Trip from './components/trip/Trip';
+import Dashboard from './share-components/Dashboard';
 
 function App() {
     const [positionStart, setPositionStart] = useState({
@@ -20,63 +22,79 @@ function App() {
     const [adressEnd, setAdressEnd] = useState('');
 
     const navigateTo = useNavigate();
+    const location = useLocation();
+    console.log('location:', location);
 
     return (
         <div className="App">
-            <Routes>
-                <Route
-                    path="/"
-                    element={
-                        <LogIn
-                            navigateToDestination={() => {
-                                navigateTo('/trip');
-                            }}
-                        />
-                    }
-                />
-                <Route
-                    path="/trip"
-                    element={
-                        <Trip
-                            navigateToDestination={() => {
-                                navigateTo('/destination');
-                            }}
-                        />
-                    }
-                />
-                <Route
-                    path="/destination"
-                    element={
-                        <CityList
-                            positionStartProps={{
-                                positionStart,
-                                setPositionStart,
-                            }}
-                            positionEndProps={{ positionEnd, setPositionEnd }}
-                            adressStartProps={{ adressStart, setAdressStart }}
-                            adressEndProps={{ adressEnd, setAdressEnd }}
-                            navigateToPlace={() => {
-                                navigateTo('/planner');
-                            }}
-                        />
-                    }
-                />
-                <Route
-                    path="/planner"
-                    element={
-                        <Planner
-                            sharedState={{
-                                positionEnd,
-                                setPositionEnd,
-                                positionStart,
-                                setPositionStart,
-                                adressStart,
-                                adressEnd,
-                            }}
-                        />
-                    }
-                />
-            </Routes>
+            <Dashboard path={location.pathname}>
+                <Routes>
+                    <Route
+                        path="/"
+                        element={
+                            <LogIn
+                                navigateToDestination={() => {
+                                    navigateTo('/trip');
+                                }}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/trip"
+                        element={
+                            // <Dashboard title="My Trips">
+                            <Trip
+                                navigateToDestination={() => {
+                                    navigateTo('/destination');
+                                }}
+                            />
+                            // </Dashboard>
+                        }
+                    />
+                    <Route
+                        path="/destination"
+                        element={
+                            // <Dashboard title="Planifier">
+                            <CityList
+                                positionStartProps={{
+                                    positionStart,
+                                    setPositionStart,
+                                }}
+                                positionEndProps={{
+                                    positionEnd,
+                                    setPositionEnd,
+                                }}
+                                adressStartProps={{
+                                    adressStart,
+                                    setAdressStart,
+                                }}
+                                adressEndProps={{ adressEnd, setAdressEnd }}
+                                navigateToPlace={() => {
+                                    navigateTo('/planner');
+                                }}
+                            />
+                            // </Dashboard>
+                        }
+                    />
+                    <Route
+                        path="/planner"
+                        element={
+                            // <Dashboard title="Planner">
+                            <Planner
+                                sharedState={{
+                                    positionEnd,
+                                    setPositionEnd,
+                                    positionStart,
+                                    setPositionStart,
+                                    adressStart,
+                                    adressEnd,
+                                }}
+                            />
+                            // </Dashboard>
+                        }
+                    />
+                </Routes>
+            </Dashboard>
         </div>
     );
 }

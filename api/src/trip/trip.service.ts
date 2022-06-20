@@ -13,6 +13,8 @@ export class TripService {
         }[]
     > {
         try {
+            console.log('userId:', userId);
+
             const res = await this.prisma.tripsOnUsers.findMany({
                 where: {
                     userId,

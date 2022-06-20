@@ -30,5 +30,9 @@ const signIn = async ({ email, password }) => {
     }
 };
 
+const signOut = async () => {
+    setAuthToken();
+};
+
 // eslint-disable-next-line import/prefer-default-export
-export { signIn };
+export { signIn, signOut };
