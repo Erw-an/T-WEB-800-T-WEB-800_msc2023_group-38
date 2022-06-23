@@ -46,6 +46,18 @@ export class TripController {
         return res;
     }
 
+    @Get('/:id/itinerary')
+    async getItineraries(
+        @GetUser('id') userId: number,
+        @Param('id', ParseIntPipe) tripId: number,
+    ) {
+        const res = await this.tripService.getTripItineraries({
+            userId,
+            tripId,
+        });
+        return res;
+    }
+
     @Get('/:id/itinerary/:itId')
     async getItinerary(
         @GetUser('id') userId: number,
