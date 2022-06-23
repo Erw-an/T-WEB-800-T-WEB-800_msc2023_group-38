@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../api';
-
 // import ButtonArrow from '../../share-components/ButtonArrow';
 import Logo from '../../share-components/Logo';
 import InputText from '../../share-components/InputText';
@@ -11,15 +10,20 @@ import ButtonArrow from '../../share-components/ButtonArrow';
 function LogIn({ navigateToDestination }) {
     const [emailState, setemailState] = useState();
     const [passwordState, setpasswordState] = useState();
+    const [firstNameState, setfirstNameState] = useState();
+    const [lastNameState, setlastNameState] = useState();
 
     const onSubmit = async () => {
         try {
-            await api.authService.signIn({
+            await api.authService.signUp({
+                firstName: firstNameState,
+                lastName: lastNameState,
                 email: emailState,
                 password: passwordState,
             });
             navigateToDestination();
         } catch (err) {
+            console.error('err:', err);
             console.error('Display an signin fail');
         }
         console.log('User registred');
@@ -40,7 +44,7 @@ function LogIn({ navigateToDestination }) {
                             <div className="lg:grid lg:grid-cols-2">
                                 <div className="rounded-lg lg:block" hidden>
                                     <img
-                                        src="https://source.unsplash.com/4uojMEdcwI8/1380x1100"
+                                        src="https://source.unsplash.com/BaCmEa2hy8g/1380x1310"
                                         className="rounded-l-xl object-cover"
                                         loading="lazy"
                                         height=""
@@ -51,16 +55,13 @@ function LogIn({ navigateToDestination }) {
 
                                 <div className="p-6 sm:p-12">
                                     <h2 className="mb-8 text-2xl text-cyan-900 font-bold">
-                                        Sign in to your account
+                                        Create your account
                                     </h2>
                                     <div className="flex items-center justify-between">
                                         <div className="text-gray-700" />
-                                        <Link
-                                            className="p-2 -mr-2"
-                                            to="/signUp"
-                                        >
+                                        <Link className="p-2 -mr-2" to="/">
                                             <span className="text-sm text-indigo-600">
-                                                Don t have a account yet ?
+                                                I already have a account ?
                                             </span>
                                         </Link>
                                     </div>
@@ -82,6 +83,38 @@ function LogIn({ navigateToDestination }) {
                                                 placeholder="Email Address"
                                                 required
                                             />
+                                        </div>
+
+                                        <div className="space-y-2 ">
+                                            <div className="flex w-full">
+                                                <InputText
+                                                    type="text"
+                                                    name="firstName"
+                                                    id="firstName"
+                                                    onChange={(e) =>
+                                                        setfirstNameState(
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                    value={firstNameState}
+                                                    placeholder="First Name"
+                                                    required
+                                                />
+                                                <div className="mx-1" />
+                                                <InputText
+                                                    type="text"
+                                                    name="lastName"
+                                                    id="lastName"
+                                                    onChange={(e) =>
+                                                        setlastNameState(
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                    value={lastNameState}
+                                                    placeholder="Last Name"
+                                                    required
+                                                />
+                                            </div>
                                         </div>
 
                                         <div className="space-y-2">
@@ -106,7 +139,7 @@ function LogIn({ navigateToDestination }) {
                                         <div className="border-t" />
                                         <div className="w-full flex justify-center">
                                             <ButtonArrow
-                                                title="Login"
+                                                title="Create Account"
                                                 onClick={() => onSubmit()}
                                                 outlined="true"
                                             />

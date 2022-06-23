@@ -1,8 +1,10 @@
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import Planner from './components/planner/Planner';
 import CityList from './components/city/CityList';
 import LogIn from './components/auth/LogIn';
+import SignUp from './components/auth/SignUp';
+
 import './index.css';
 import Trip from './components/trip/Trip';
 import Dashboard from './share-components/Dashboard';
@@ -22,17 +24,27 @@ function App() {
     const [adressEnd, setAdressEnd] = useState('');
 
     const navigateTo = useNavigate();
-    const location = useLocation();
-    console.log('location:', location);
+
+    const noDashbordPath = ['/', '/signUp'];
 
     return (
         <div className="App">
-            <Dashboard path={location.pathname}>
+            <Dashboard noDashbordPath={noDashbordPath}>
                 <Routes>
                     <Route
                         path="/"
                         element={
                             <LogIn
+                                navigateToDestination={() => {
+                                    navigateTo('/trip');
+                                }}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/signUp"
+                        element={
+                            <SignUp
                                 navigateToDestination={() => {
                                     navigateTo('/trip');
                                 }}
