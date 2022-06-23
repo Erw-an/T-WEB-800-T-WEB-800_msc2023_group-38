@@ -24,9 +24,9 @@ function Dashboard({ children, path }) {
                             <div className="-mx-6 px-6 py-4 flex justify-center opacity-60 mt-3 -mb-3 ">
                                 <a href="/" title="home" className="flex">
                                     <Logo size={16} />
-                                    <div className="font-bold mt-5 ml-3">
+                                    {/* <div className="font-bold mt-5 ml-3">
                                         FLYTRIP
-                                    </div>
+                                    </div> */}
                                 </a>
                             </div>
 

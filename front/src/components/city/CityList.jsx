@@ -93,6 +93,16 @@ function CityList({
 
     const optimizedDebounceEnd = useCallback(debounce(handleInputEnd, 600), []);
 
+    const setInputStart = (e) => {
+        setAdressStart(e.target.value);
+        optimizedDebounceStart(e);
+    };
+
+    const setInputEnd = (e) => {
+        setAdressEnd(e.target.value);
+        optimizedDebounceEnd(e);
+    };
+
     const handleAdressOnclick = (isStart, pos, adress) => {
         if (isStart) {
             setAdressStart(adress);
@@ -104,6 +114,17 @@ function CityList({
             setSuggestionsEnd([]);
         }
     };
+
+    // const handleClick = async () => {
+    //     try {
+    //         const res = await api.tripService.createTrip();
+    //         setNewTrip(res);
+    //         setTimeout(() => navigateToDestination(), 1500);
+    //     } catch (e) {
+    //         setError(e.message);
+    //         setNewTrip(null);
+    //     }
+    // };
 
     const saveItinerary = async () => {
         try {
@@ -119,7 +140,7 @@ function CityList({
     };
     return (
         <>
-            <div>
+            <div className="my-3">
                 {/* <h3>Start</h3>
                 <input
                     onChange={(e) => optimizedDebounceStart(e)}
@@ -129,29 +150,34 @@ function CityList({
 
                 <InputText
                     placeholder="Start destination"
-                    onChange={(e) => optimizedDebounceStart(e)}
+                    onChange={(e) => setInputStart(e)}
+                    value={adressStart}
                     // value=
                 />
-
-                {suggestionsStart.length > 0 &&
-                    suggestionsStart.map((elem) => (
-                        <SuggestionSearchItem
-                            key={elem.osm_id}
-                            displayAddress={elem.display_address}
-                            onClick={() =>
-                                handleAdressOnclick(
-                                    true,
-                                    {
-                                        lat: elem.lat,
-                                        lng: elem.lon,
-                                    },
-                                    elem.display_address,
-                                )
-                            }
-                        />
-                    ))}
+                <div className="relative">
+                    {suggestionsStart.length > 0 && (
+                        <div className="absolute z-10 bg-white w-full rounded-md p-3 border-2 border-gray-200 shadow-lg">
+                            {suggestionsStart.map((elem) => (
+                                <SuggestionSearchItem
+                                    key={elem.osm_id}
+                                    displayAddress={elem.display_address}
+                                    onClick={() =>
+                                        handleAdressOnclick(
+                                            true,
+                                            {
+                                                lat: elem.lat,
+                                                lng: elem.lon,
+                                            },
+                                            elem.display_address,
+                                        )
+                                    }
+                                />
+                            ))}
+                        </div>
+                    )}
+                </div>
             </div>
-            <div>
+            <div className="my-3">
                 {/* <h3>End</h3>
                 <input
                     onChange={(e) => optimizedDebounceEnd(e)}
@@ -160,37 +186,42 @@ function CityList({
                 /> */}
                 <InputText
                     placeholder="End destination"
-                    onChange={(e) => optimizedDebounceEnd(e)}
+                    onChange={(e) => setInputEnd(e)}
+                    value={adressEnd}
                 />
-
-                {suggestionsEnd.length > 0 &&
-                    suggestionsEnd.map((elem) => (
-                        <SuggestionSearchItem
-                            key={elem.osm_id}
-                            displayAddress={elem.display_address}
-                            onClick={() =>
-                                handleAdressOnclick(
-                                    false,
-                                    {
-                                        lat: elem.lat,
-                                        lng: elem.lon,
-                                    },
-                                    elem.display_address,
-                                )
-                            }
-                        />
-                    ))}
+                <div className="relative">
+                    {suggestionsEnd.length > 0 && (
+                        <div className="absolute z-10 bg-white w-full rounded-md p-3 border-2 border-gray-200 shadow-lg">
+                            {suggestionsEnd.map((elem) => (
+                                <SuggestionSearchItem
+                                    key={elem.osm_id}
+                                    displayAddress={elem.display_address}
+                                    onClick={() =>
+                                        handleAdressOnclick(
+                                            false,
+                                            {
+                                                lat: elem.lat,
+                                                lng: elem.lon,
+                                            },
+                                            elem.display_address,
+                                        )
+                                    }
+                                />
+                            ))}
+                        </div>
+                    )}
+                </div>
             </div>
             <div>
-                <h4>Direction steps</h4>
-                <p>Total {directionSteps.length}</p>
+                {/* <h4>Direction steps</h4> */}
+                {/* <p>Total {directionSteps.length}</p> */}
                 {directionSteps.length > 0 &&
                     directionSteps.map((step) => (
                         <div>
-                            <p>Distance {step.distance}</p>
-                            <p>Duration {step.duration}</p>
-                            <p>Instruction {step.instruction}</p>
-                            <p>Name {step.name}</p>
+                            {/* <p>Distance {step.distance}</p>
+                            <p>Duration {step.duration}</p> */}
+                            <p>{step.name}</p>
+                            <p>{step.instruction}</p>
                             <p>
                                 -----------------------------------------------------------------------
                             </p>

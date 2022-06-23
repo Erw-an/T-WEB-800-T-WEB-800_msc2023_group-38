@@ -37,7 +37,7 @@ function Trip({ navigateToDestination }) {
 
     return (
         <>
-            <div className="ml-7">
+            <div className="ml-7 opacity-0">
                 <ButtonArrow
                     title="Create a new trip"
                     onClick={handleClick}

@@ -13,6 +13,8 @@ const setAuthToken = (token) => {
 };
 
 const signIn = async ({ email, password }) => {
+    console.log('password:', password);
+    console.log('email:', email);
     try {
         const { data } = await axiosInstance.post(`${BASE_URL}/signin`, {
             email,
