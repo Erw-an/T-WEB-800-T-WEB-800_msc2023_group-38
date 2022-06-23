@@ -4,6 +4,7 @@ import Planner from './components/planner/Planner';
 import CityList from './components/city/CityList';
 import LogIn from './components/auth/LogIn';
 import Trip from './components/trip/Trip';
+import Itinerary from './components/itinerary/Itinerary';
 
 function App() {
     const [positionStart, setPositionStart] = useState({
@@ -15,6 +16,8 @@ function App() {
         lat: null,
         lng: null,
     });
+
+    const [dirSteps, setDirSteps] = useState([]);
 
     const [adressStart, setAdressStart] = useState('');
     const [adressEnd, setAdressEnd] = useState('');
@@ -55,6 +58,7 @@ function App() {
                             positionEndProps={{ positionEnd, setPositionEnd }}
                             adressStartProps={{ adressStart, setAdressStart }}
                             adressEndProps={{ adressEnd, setAdressEnd }}
+                            dirStepsProps={{ dirSteps, setDirSteps }}
                             navigateToPlace={() => {
                                 navigateTo('/planner');
                             }}
@@ -73,6 +77,20 @@ function App() {
                                 adressStart,
                                 adressEnd,
                             }}
+                            navigateToItinerary={() => {
+                                navigateTo('/itinerary');
+                            }}
+                        />
+                    }
+                />
+                <Route
+                    path="/itinerary"
+                    element={
+                        <Itinerary
+                            positionEnd={positionEnd}
+                            adresseStart={adressStart}
+                            adresseEnd={adressEnd}
+                            dirSteps={dirSteps}
                         />
                     }
                 />

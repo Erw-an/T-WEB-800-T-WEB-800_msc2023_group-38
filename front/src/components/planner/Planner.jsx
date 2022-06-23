@@ -8,7 +8,7 @@ import api from '../../api';
 import './Planner.css';
 import MapView from '../map/MapView';
 
-function Planner({ sharedState }) {
+function Planner({ sharedState, navigateToItinerary }) {
     const { positionEnd, adressEnd } = sharedState;
     const [selected, setSelected] = useState([]);
     const [error, setError] = useState('');
@@ -78,13 +78,18 @@ function Planner({ sharedState }) {
             <p>{error}</p>
             <div>
                 {data.length > 0 && !mapIsHidden && (
-                    <MapView
-                        data={data}
-                        lat={positionEnd.lat}
-                        lng={positionEnd.lng}
-                        amenity={lastSelected}
-                        setError={setError}
-                    />
+                    <>
+                        <MapView
+                            data={data}
+                            lat={positionEnd.lat}
+                            lng={positionEnd.lng}
+                            amenity={lastSelected}
+                            setError={setError}
+                        />
+                        <button type="button" onClick={navigateToItinerary}>
+                            See map preview
+                        </button>
+                    </>
                 )}
             </div>
         </>
@@ -92,7 +97,14 @@ function Planner({ sharedState }) {
 }
 
 Planner.propTypes = {
-    sharedState: PropTypes.any.isRequired,
+    navigateToItinerary: PropTypes.func.isRequired,
+    sharedState: PropTypes.shape({
+        adressEnd: PropTypes.any,
+        positionEnd: PropTypes.shape({
+            lat: PropTypes.any,
+            lng: PropTypes.any,
+        }),
+    }).isRequired,
 };
 
 export default Planner;
