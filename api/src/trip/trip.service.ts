@@ -3,11 +3,13 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Trip, Prisma } from '@prisma/client';
 
+enum EMsgExpn {
+    INY_NOT_FOUND = 'Itinerary not found',
+    PLACE_ALREADY_ADDED = 'Itinerary not found',
+}
 @Injectable()
 export class TripService {
     constructor(private config: ConfigService, private prisma: PrismaService) {}
-
-    private custom_code_expn = this.config.get('CUSTOM_CODE_EXPN');
 
     async getTrips(userId: number): Promise<
         {
@@ -116,13 +118,13 @@ export class TripService {
             return { itinerary: res.trip.itineraries[0] };
         } catch (err) {
             throw new HttpException(
-                'Itinerary not found',
-                this.custom_code_expn,
+                EMsgExpn.INY_NOT_FOUND,
+                HttpStatus.BAD_REQUEST,
             );
         }
     }
 
-    private getTripItineraries = async ({ userId, tripId }): Promise<any> => {
+    getTripItineraries = async ({ userId, tripId }): Promise<any> => {
         try {
             const { trip: itineraries } =
                 await this.prisma.tripsOnUsers.findUnique({
@@ -143,8 +145,8 @@ export class TripService {
             return itineraries;
         } catch (err) {
             throw new HttpException(
-                'Itinerary not found.',
-                this.custom_code_expn,
+                EMsgExpn.INY_NOT_FOUND,
+                HttpStatus.BAD_REQUEST,
             );
         }
     };
@@ -182,10 +184,6 @@ export class TripService {
             });
             return res;
         } catch (err) {
-            console.log(
-                '🚀 ~ file: trip.service.ts ~ line 194 ~ TripService ~ upsertPlace= ~ err',
-                err,
-            );
             let msg = 'Error';
             let code = HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -193,8 +191,8 @@ export class TripService {
                 err instanceof Prisma.PrismaClientKnownRequestError &&
                 err.code == 'P2002'
             ) {
-                msg = 'Place has been already added';
-                code = this.custom_code_expn;
+                msg = EMsgExpn.INY_NOT_FOUND;
+                code = HttpStatus.BAD_REQUEST;
             }
             throw new HttpException(msg, code);
         }
@@ -208,7 +206,7 @@ export class TripService {
             console.error('ensureUserHasItinerary failed');
             throw new HttpException(
                 'Itinerary not found',
-                this.custom_code_expn,
+                HttpStatus.BAD_REQUEST,
             );
         }
     };
@@ -228,9 +226,10 @@ export class TripService {
             return res;
         } catch (err) {
             let msg = 'Error';
+
             if (
                 err instanceof HttpException &&
-                err.getStatus() === this.custom_code_expn
+                (err.getResponse() as string) in EMsgExpn
             ) {
                 msg = err.getResponse() as string;
             }
@@ -264,7 +263,7 @@ export class TripService {
             let msg = 'Error';
             if (
                 err instanceof HttpException &&
-                err.getStatus() === this.custom_code_expn
+                (err.getResponse() as string) in EMsgExpn
             ) {
                 msg = err.getResponse() as string;
             }
