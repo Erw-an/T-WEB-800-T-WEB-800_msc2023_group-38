@@ -1,8 +1,9 @@
 // import PropTypes from 'prop-types';
 import React from 'react';
 import planerDown from '../utils/icons/planerDown.svg';
+import planerUp from '../utils/icons/planerUp.svg';
 
-function Card() {
+function Card(planeUp) {
     return (
         <article className="p-6 bg-white sm:p-8 rounded-xl ring ring-indigo-50 shadow-lg m-6">
             <div className="flex items-start">
@@ -16,13 +17,19 @@ function Card() {
                         <span className="h-4 w-0.5 rounded-full bg-indigo-500" />
                         <span className="h-6 w-0.5 rounded-full bg-indigo-500" />
                         <span className="h-8 w-0.5 rounded-full bg-indigo-500" /> */}
-                        <img src={planerDown} alt="planer" />
+                        <img
+                            src={planeUp ? planerUp : planerDown}
+                            alt="planer"
+                        />
                     </div>
                 </div>
 
                 <div className="sm:ml-8">
-                    <strong className="rounded border border-indigo-500 bg-indigo-500 px-3 py-1.5 text-[10px] font-medium text-white">
-                        Episode #101
+                    <strong className="rounded border border-indigo-500 bg-indigo-500 px-3 mx-1 py-1.5 text-[10px] font-medium text-white">
+                        Toulouse
+                    </strong>
+                    <strong className="rounded border border-indigo-500 bg-indigo-500 px-3 mx-1 py-1.5 text-[10px] font-medium text-white">
+                        Paris
                     </strong>
 
                     <h2 className="mt-4 text-lg font-medium sm:text-xl">

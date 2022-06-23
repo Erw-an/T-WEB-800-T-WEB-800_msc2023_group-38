@@ -19,7 +19,7 @@ function Dashboard({ children, noDashbordPath }) {
         <>
             {!noDashbordPath.includes(path) ? (
                 <>
-                    <aside className="ml-[-100%] fixed z-10 top-0 pb-3 px-6 w-full flex flex-col justify-between h-screen border-r bg-white transition duration-300 md:w-4/12 lg:ml-0 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]">
+                    <aside className="shadow-lg ml-[-100%] fixed z-10 top-0 pb-3 px-6 w-full flex flex-col justify-between h-screen border-r bg-white transition duration-300 md:w-4/12 lg:ml-0 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]">
                         <div>
                             <div className="-mx-6 px-6 py-4 flex justify-center opacity-60 mt-3 -mb-3 ">
                                 <a href="/" title="home" className="flex">
@@ -34,8 +34,12 @@ function Dashboard({ children, noDashbordPath }) {
                             className="w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28"
                         /> */}
                                 <div className="m-auto rounded-full lg:w-28 lg:h-28 bg-gray-50 border-2 border-gray-300 text-center ">
-                                    <div className="mt-9 font-bold text-3xl opacity-50">
-                                        JS
+                                    <div className="mt-8 font-bold text-4xl opacity-50">
+                                        {jwtDecode(
+                                            sessionStorage.getItem('token'),
+                                        )
+                                            .email.substring(0, 1)
+                                            .toUpperCase()}
                                     </div>
                                 </div>
                                 <h5 className="hidden mt-4 text-lg font-semibold text-gray-600 lg:block">
@@ -125,9 +129,9 @@ function Dashboard({ children, noDashbordPath }) {
                             </a>
                         </div>
                     </aside>
-                    <div className="ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]">
-                        <div className="sticky top-0 h-16 border-b bg-white lg:py-2.5">
-                            <div className="px-6 flex items-center justify-between space-x-4 2xl:container">
+                    <div className="min-h-screen bg-gray-50 ml-auto  lg:w-[75%] xl:w-[80%] 2xl:w-[85%] ">
+                        <div className="sticky top-0 h-16 border-b bg-white lg:py-2.5 z-50 shadow-md">
+                            <div className="px-6 flex items-center justify-between space-x-4 2xl:container ">
                                 <h5
                                     hidden
                                     className="text-2xl text-gray-600 font-medium lg:block"
@@ -235,7 +239,7 @@ function Dashboard({ children, noDashbordPath }) {
                             </div>
                         </div>
 
-                        <div className="px-6 pt-6 2xl:container bg-gray-50">
+                        <div className="px-6 pt-8 2xl:container">
                             {children}
                         </div>
                     </div>

@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import api from '../../api';
 import SuggestionSearchItem from './SuggestionSearchItem';
 import InputText from '../../share-components/InputText';
+import Step from '../../share-components/Step';
 
 function CityList({
     adressStartProps,
@@ -140,7 +141,11 @@ function CityList({
     };
     return (
         <>
-            <div className="my-3">
+            <div className="my-3 mx-44 ">
+                <div className="mb-12 mt-12">
+                    <Step currentStep={1} />
+                </div>
+
                 {/* <h3>Start</h3>
                 <input
                     onChange={(e) => optimizedDebounceStart(e)}
@@ -177,7 +182,7 @@ function CityList({
                     )}
                 </div>
             </div>
-            <div className="my-3">
+            <div className="my-3 mx-44">
                 {/* <h3>End</h3>
                 <input
                     onChange={(e) => optimizedDebounceEnd(e)}
