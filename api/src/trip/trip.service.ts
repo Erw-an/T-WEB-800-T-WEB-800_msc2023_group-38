@@ -5,7 +5,7 @@ import { Trip, Prisma } from '@prisma/client';
 
 enum EMsgExpn {
     INY_NOT_FOUND = 'Itinerary not found',
-    PLACE_ALREADY_ADDED = 'Itinerary not found',
+    PLACE_ALREADY_ADDED = 'Place already added',
 }
 @Injectable()
 export class TripService {
