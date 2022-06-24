@@ -4,7 +4,7 @@ import Planner from './components/planner/Planner';
 import CityList from './components/city/CityList';
 import LogIn from './components/auth/LogIn';
 import Trip from './components/trip/Trip';
-import Itinerary from './components/itinerary/Itinerary';
+import ItinerarySaver from './components/itinerary/ItinerarySaver';
 
 function App() {
     const [positionStart, setPositionStart] = useState({
@@ -77,8 +77,8 @@ function App() {
                                 adressStart,
                                 adressEnd,
                             }}
-                            navigateToItinerary={() => {
-                                navigateTo('/itinerary');
+                            navigateToItinerarySaver={() => {
+                                navigateTo('/itinerarySaver');
                             }}
                         />
                     }
@@ -86,7 +86,7 @@ function App() {
                 <Route
                     path="/itinerary"
                     element={
-                        <Itinerary
+                        <ItinerarySaver
                             positionEnd={positionEnd}
                             adresseStart={adressStart}
                             adresseEnd={adressEnd}

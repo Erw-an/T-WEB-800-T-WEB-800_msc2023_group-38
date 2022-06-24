@@ -8,7 +8,7 @@ import api from '../../api';
 import './Planner.css';
 import MapView from '../map/MapView';
 
-function Planner({ sharedState, navigateToItinerary }) {
+function Planner({ sharedState, navigateToItinerarySaver }) {
     const { positionEnd, adressEnd } = sharedState;
     const [selected, setSelected] = useState([]);
     const [error, setError] = useState('');
@@ -86,7 +86,10 @@ function Planner({ sharedState, navigateToItinerary }) {
                             amenity={lastSelected}
                             setError={setError}
                         />
-                        <button type="button" onClick={navigateToItinerary}>
+                        <button
+                            type="button"
+                            onClick={navigateToItinerarySaver}
+                        >
                             See map preview
                         </button>
                     </>
@@ -97,7 +100,7 @@ function Planner({ sharedState, navigateToItinerary }) {
 }
 
 Planner.propTypes = {
-    navigateToItinerary: PropTypes.func.isRequired,
+    navigateToItinerarySaver: PropTypes.func.isRequired,
     sharedState: PropTypes.shape({
         adressEnd: PropTypes.any,
         positionEnd: PropTypes.shape({
