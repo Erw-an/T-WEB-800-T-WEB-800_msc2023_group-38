@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import api from '../../api';
 
-function LogIn({ navigateToDestination }) {
+function LogIn({ navigateToTrip }) {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -17,7 +17,7 @@ function LogIn({ navigateToDestination }) {
         e.preventDefault();
         try {
             await api.authService.signIn(formData);
-            navigateToDestination();
+            navigateToTrip();
         } catch (err) {
             console.error('Display an signin fail');
         }
@@ -62,6 +62,6 @@ function LogIn({ navigateToDestination }) {
 }
 
 LogIn.propTypes = {
-    navigateToDestination: PropTypes.func.isRequired,
+    navigateToTrip: PropTypes.func.isRequired,
 };
 export default LogIn;
