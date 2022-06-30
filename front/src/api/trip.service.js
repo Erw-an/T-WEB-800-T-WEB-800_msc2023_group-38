@@ -58,6 +58,24 @@ const getItinerary = async () => {
     }
 };
 
+const getItineraries = async () => {
+    try {
+        const tripId = sessionStorage.getItem('tripId');
+
+        if (!tripId) {
+            throw new Error('Information missing');
+        }
+        const { data } = await axiosInstance.get(
+            `${BASE_URL}/${tripId}/itinerary/`,
+        );
+
+        return data;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
 const saveItineraryFile = async ({ formData }) => {
     try {
         const tripId = sessionStorage.getItem('tripId');
@@ -102,5 +120,6 @@ export {
     saveItinerary,
     savePlace,
     getItinerary,
+    getItineraries,
     saveItineraryFile,
 };

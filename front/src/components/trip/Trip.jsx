@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import api from '../../api';
 
-function Trip({ navigateToDestination }) {
+function Trip({ navigateToDestination, navigateToTripItem }) {
     const [trips, setTrips] = useState([]);
     const [error, setError] = useState();
     const [newTrip, setNewTrip] = useState(null);
@@ -57,6 +57,14 @@ function Trip({ navigateToDestination }) {
                                 <p>Trip {idx}</p>
                                 <p>Created at :{elem.trip.createdAt}</p>
                                 <p>Updated at :{elem.trip.updatedAt}</p>
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        navigateToTripItem(elem.trip.id)
+                                    }
+                                >
+                                    See trips
+                                </button>
                             </div>
                         ))}
                 </div>
@@ -68,6 +76,7 @@ function Trip({ navigateToDestination }) {
 
 Trip.propTypes = {
     navigateToDestination: PropTypes.func.isRequired,
+    navigateToTripItem: PropTypes.func.isRequired,
 };
 
 export default Trip;

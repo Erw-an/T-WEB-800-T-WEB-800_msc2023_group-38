@@ -5,6 +5,7 @@ import CityList from './components/city/CityList';
 import LogIn from './components/auth/LogIn';
 import Trip from './components/trip/Trip';
 import ItinerarySaver from './components/itinerary/ItinerarySaver';
+import TripItem from './components/trip/TripItem';
 
 function App() {
     const [positionStart, setPositionStart] = useState({
@@ -44,9 +45,14 @@ function App() {
                             navigateToDestination={() => {
                                 navigateTo('/destination');
                             }}
+                            navigateToTripItem={(id) => {
+                                navigateTo(`/trip/${id}`);
+                            }}
                         />
                     }
                 />
+
+                <Route path="/trip/:id" element={<TripItem />} />
                 <Route
                     path="/destination"
                     element={
