@@ -8,7 +8,13 @@ import 'leaflet/dist/leaflet.css';
 import api from '../../api';
 import PreviewMarkers from './marker/PreviewMarkers';
 
-function ItinerarySaver({ positionEnd, dirSteps, adresseStart, adresseEnd }) {
+function ItinerarySaver({
+    navigateToTrip,
+    positionEnd,
+    dirSteps,
+    adresseStart,
+    adresseEnd,
+}) {
     const [error, setError] = useState('');
 
     const [data, setData] = useState(null);
@@ -37,6 +43,7 @@ function ItinerarySaver({ positionEnd, dirSteps, adresseStart, adresseEnd }) {
             const formData = new FormData();
             formData.append('itinerary_blob', blob);
             await api.tripService.saveItineraryFile({ formData });
+            navigateToTrip();
         } catch (err) {
             console.error('oops, something went wrong!', err);
         }
@@ -103,6 +110,7 @@ ItinerarySaver.propTypes = {
     adresseEnd: PropTypes.string.isRequired,
     adresseStart: PropTypes.string.isRequired,
     dirSteps: PropTypes.array.isRequired,
+    navigateToTrip: PropTypes.func.isRequired,
     positionEnd: PropTypes.array.isRequired,
 };
 

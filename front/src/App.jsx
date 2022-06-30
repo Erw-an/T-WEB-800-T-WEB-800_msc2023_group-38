@@ -31,7 +31,7 @@ function App() {
                     path="/"
                     element={
                         <LogIn
-                            navigateToDestination={() => {
+                            navigateToTrip={() => {
                                 navigateTo('/trip');
                             }}
                         />
@@ -84,13 +84,16 @@ function App() {
                     }
                 />
                 <Route
-                    path="/itinerary"
+                    path="/itinerarySaver"
                     element={
                         <ItinerarySaver
                             positionEnd={positionEnd}
                             adresseStart={adressStart}
                             adresseEnd={adressEnd}
                             dirSteps={dirSteps}
+                            navigateToTrip={() => {
+                                navigateTo('/trip');
+                            }}
                         />
                     }
                 />
