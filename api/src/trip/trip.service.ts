@@ -134,10 +134,16 @@ export class TripService {
                             tripId,
                         },
                     },
-                    select: {
+                    include: {
                         trip: {
-                            select: {
-                                itineraries: { select: { id: true } },
+                            include: {
+                                itineraries: {
+                                    select: {
+                                        id: true,
+                                        tripId: true,
+                                        resumeFile: true,
+                                    },
+                                },
                             },
                         },
                     },
@@ -150,6 +156,33 @@ export class TripService {
             );
         }
     };
+
+    // getTripItineraries = async ({ userId, tripId }): Promise<any> => {
+    //     try {
+    //         const { trip: itineraries } =
+    //             await this.prisma.tripsOnUsers.findUnique({
+    //                 where: {
+    //                     userId_tripId: {
+    //                         userId,
+    //                         tripId,
+    //                     },
+    //                 },
+    //                 select: {
+    //                     trip: {
+    //                         select: {
+    //                             itineraries: { select: { resumeFile: true } },
+    //                         },
+    //                     },
+    //                 },
+    //             });
+    //         return itineraries;
+    //     } catch (err) {
+    //         throw new HttpException(
+    //             EMsgExpn.INY_NOT_FOUND,
+    //             HttpStatus.BAD_REQUEST,
+    //         );
+    //     }
+    // };
 
     private upsertPlace = async ({ content, itineraryId }): Promise<any> => {
         const { id, lat, lon, tags } = content;
@@ -200,8 +233,9 @@ export class TripService {
 
     private ensureUserHasItinerary = ({ itineraries, itineraryId }): void => {
         const hasItinerary = itineraries.some(
-            (el) => el.id == (itineraryId as number),
+            (itinerary) => itinerary.id === (itineraryId as number),
         );
+
         if (!hasItinerary) {
             console.error('ensureUserHasItinerary failed');
             throw new HttpException(
@@ -229,7 +263,7 @@ export class TripService {
 
             if (
                 err instanceof HttpException &&
-                (err.getResponse() as string) in EMsgExpn
+                Object.values(EMsgExpn).includes(err.getResponse() as EMsgExpn)
             ) {
                 msg = err.getResponse() as string;
             }
@@ -263,7 +297,7 @@ export class TripService {
             let msg = 'Error';
             if (
                 err instanceof HttpException &&
-                (err.getResponse() as string) in EMsgExpn
+                Object.values(EMsgExpn).includes(err.getResponse() as EMsgExpn)
             ) {
                 msg = err.getResponse() as string;
             }
