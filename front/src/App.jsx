@@ -6,8 +6,10 @@ import SignUp from './components/auth/SignUp';
 
 import './index.css';
 import Trip from './components/trip/Trip';
+
 import Dashboard from './share-components/Dashboard';
 import StepContainer from './components/stepContainer/StepContainer';
+import TripItem from './components/trip/TripItem';
 
 function App() {
     const navigateTo = useNavigate();
@@ -71,6 +73,7 @@ function App() {
                             // </Dashboard>
                         }
                     />
+                    <Route path="/trip/:id" element={<TripItem />} />
                 </Routes>
             </Dashboard>
         </div>

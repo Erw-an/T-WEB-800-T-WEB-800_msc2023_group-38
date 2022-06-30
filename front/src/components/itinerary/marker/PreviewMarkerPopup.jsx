@@ -2,13 +2,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Popup } from 'react-leaflet';
 
-function MarkerPopup({ elem, onClickMarker }) {
+function MarkerPopup({ elem }) {
     return (
         <Popup>
             <div className="poup-text">{elem.tags.name}</div>
-            <button type="button" onClick={() => onClickMarker(elem)}>
-                Button
-            </button>
         </Popup>
     );
 }
@@ -19,6 +16,5 @@ MarkerPopup.propTypes = {
             name: PropTypes.string,
         }),
     }).isRequired,
-    onClickMarker: PropTypes.func.isRequired,
 };
 export default MarkerPopup;

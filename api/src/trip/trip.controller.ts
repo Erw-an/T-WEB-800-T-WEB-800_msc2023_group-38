@@ -1,3 +1,4 @@
+import { FileInterceptor } from '@nestjs/platform-express';
 import { GetUser } from './../auth/decorator/get-user.decorator';
 import { TripService } from './trip.service';
 import {
@@ -9,6 +10,8 @@ import {
     Param,
     Body,
     ParseIntPipe,
+    UseInterceptors,
+    UploadedFile,
 } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guard';
 
@@ -39,6 +42,49 @@ export class TripController {
             userId,
             tripId,
             content,
+        });
+        return res;
+    }
+
+    @Get('/:id/itinerary')
+    async getItineraries(
+        @GetUser('id') userId: number,
+        @Param('id', ParseIntPipe) tripId: number,
+    ) {
+        const res = await this.tripService.getTripItineraries({
+            userId,
+            tripId,
+        });
+        return res;
+    }
+
+    @Get('/:id/itinerary/:itId')
+    async getItinerary(
+        @GetUser('id') userId: number,
+        @Param('id', ParseIntPipe) tripId: number,
+        @Param('itId', ParseIntPipe) itId: number,
+    ) {
+        const res = await this.tripService.getItinerary({
+            userId,
+            tripId,
+            itId,
+        });
+        return res;
+    }
+
+    @Patch('/:id/itinerary/:itId')
+    @UseInterceptors(FileInterceptor('itinerary_blob'))
+    async saveItineraryFile(
+        @GetUser('id') userId: number,
+        @Param('id', ParseIntPipe) tripId: number,
+        @Param('itId', ParseIntPipe) itineraryId: number,
+        @UploadedFile() file: Express.Multer.File,
+    ) {
+        const res = this.tripService.saveItineraryFile({
+            userId,
+            tripId,
+            itineraryId,
+            file,
         });
         return res;
     }

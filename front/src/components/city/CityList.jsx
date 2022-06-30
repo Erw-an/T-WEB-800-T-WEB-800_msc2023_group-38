@@ -1,3 +1,4 @@
+/* eslint-disable react/forbid-prop-types */
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
 import api from '../../api';
@@ -12,16 +13,18 @@ function CityList({
     positionStartProps,
     positionEndProps,
     setStepState,
+    dirStepsProps,
 }) {
     const [suggestionsStart, setSuggestionsStart] = useState([]);
     const [suggestionsEnd, setSuggestionsEnd] = useState([]);
-    const [directionSteps, setDirectionSteps] = useState([]);
+
     const [error, setError] = useState('');
 
     const [newTrip, setNewTrip] = useState(null);
     console.log('newTrip:', newTrip);
 
     // Inherited state
+    const { dirSteps, setDirSteps } = dirStepsProps;
     const { positionStart, setPositionStart } = positionStartProps;
     const { positionEnd, setPositionEnd } = positionEndProps;
 
@@ -45,7 +48,7 @@ function CityList({
                 const { steps } =
                     res.content.features[0].properties.segments[0];
 
-                setDirectionSteps(steps);
+                setDirSteps(steps);
             })();
         }
     }, [positionStart, positionEnd]);
@@ -135,9 +138,9 @@ function CityList({
         try {
             const itinerary = {
                 coords: { adressStart, adressEnd, positionStart, positionEnd },
-                directionSteps,
+                dirSteps,
             };
-            await api.tripService.saveItinerary(itinerary);
+            await api.tripService.saveItinerary({ itinerary });
             setStepState(2);
         } catch (err) {
             setError(err.message);
@@ -215,6 +218,7 @@ function CityList({
                     />
                 </div>
             </div>
+
             <div className="mt-12">
                 {directionSteps.length > 0 && (
                     <>
@@ -248,13 +252,16 @@ CityList.propTypes = {
         adressStart: PropTypes.string,
         setAdressStart: PropTypes.func,
     }).isRequired,
+    dirStepsProps: PropTypes.shape({
+        dirSteps: PropTypes.any,
+        setDirSteps: PropTypes.func,
+    }).isRequired,
+    navigateToPlace: PropTypes.func.isRequired,
     positionEndProps: PropTypes.shape({
-        // eslint-disable-next-line react/forbid-prop-types
         positionEnd: PropTypes.object,
         setPositionEnd: PropTypes.func,
     }).isRequired,
     positionStartProps: PropTypes.shape({
-        // eslint-disable-next-line react/forbid-prop-types
         positionStart: PropTypes.object,
         setPositionStart: PropTypes.func,
     }).isRequired,

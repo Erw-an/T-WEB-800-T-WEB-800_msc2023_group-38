@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import api from '../../api';
 import Card from '../../share-components/Card';
 
-function Trip({ done }) {
+function Trip({ done, navigateToTripItem }) {
     const [trips, setTrips] = useState([]);
     const [error, setError] = useState();
 
@@ -31,6 +31,7 @@ function Trip({ done }) {
                             title={idx}
                             createdAt={elem.trip.createdAt}
                             updatedAt={elem.trip.updatedAt}
+                            onClick={() => navigateToTripItem(elem.trip.id)}
                         />
                     ))}
             </div>
@@ -42,6 +43,8 @@ function Trip({ done }) {
 
 Trip.propTypes = {
     done: PropTypes.bool.isRequired,
+
+    navigateToTripItem: PropTypes.func.isRequired,
 };
 
 export default Trip;

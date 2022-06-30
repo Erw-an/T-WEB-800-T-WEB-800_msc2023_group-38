@@ -20,13 +20,25 @@ model User {
 }
 
 model Itinerary {
-  id        Int                   @id @default(autoincrement())
-  tripId    Int
-  content   Json
-  createdAt DateTime              @default(now())
-  updatedAt DateTime              @updatedAt
-  trip      Trip                  @relation(fields: [tripId], references: [id], onDelete: Cascade)
-  places    PlacesOnItineraries[]
+  id         Int                   @id @default(autoincrement())
+  tripId     Int
+  content    Json
+  createdAt  DateTime              @default(now())
+  updatedAt  DateTime              @updatedAt
+  trip       Trip                  @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  places     PlacesOnItineraries[]
+  resumeFile ResumeFile?
+}
+
+model ResumeFile {
+  id          Int       @default(autoincrement())
+  itineraryId Int       @unique
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  data        Bytes
+  itinerary   Itinerary @relation(fields: [itineraryId], references: [id], onDelete: Cascade)
+
+  @@id([id, itineraryId])
 }
 
 model Place {

@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Markers from './marker/VenueMarkers';
+import api from '../../api';
 
 import './map.css';
 
@@ -28,6 +29,17 @@ function MapView({ lat, lng, data, setError }) {
         })();
     }, [msg]);
 
+    const onClickMarker = async (elem) => {
+        try {
+            await api.tripService.savePlace({
+                content: { ...elem },
+            });
+            setMsg('Element added');
+        } catch (error) {
+            setError(error.message);
+        }
+    };
+
     return (
         <>
             {/* <h3>{amenity}</h3>
@@ -43,7 +55,7 @@ function MapView({ lat, lng, data, setError }) {
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     />{' '}
-                    <Markers data={data} setError={setError} setMsg={setMsg} />
+                    <Markers data={data} onClickMarker={onClickMarker} />
                 </MapContainer>
             </div>
         </>

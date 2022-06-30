@@ -3,6 +3,10 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Trip, Prisma } from '@prisma/client';
 
+enum EMsgExpn {
+    INY_NOT_FOUND = 'Itinerary not found',
+    PLACE_ALREADY_ADDED = 'Place already added',
+}
 @Injectable()
 export class TripService {
     constructor(private config: ConfigService, private prisma: PrismaService) {}
@@ -37,9 +41,7 @@ export class TripService {
                     users: {
                         create: {
                             user: {
-                                connect: {
-                                    id: userId,
-                                },
+                                connect: { id: userId as number },
                             },
                         },
                     },
@@ -82,83 +84,224 @@ export class TripService {
             const { itineraries } = tripItineraries.trip;
             return itineraries[itineraries.length - 1];
         } catch (err) {
-            console.log(err);
             throw new HttpException('Error', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    async savePlace({ userId, tripId, itineraryId, content }) {
+    async getItinerary({ userId, tripId, itId }) {
         try {
-            const ensureUserOwnItinerary = async () => {
-                const res = await this.prisma.tripsOnUsers.findUnique({
+            const res = await this.prisma.tripsOnUsers.findUnique({
+                where: {
+                    userId_tripId: {
+                        userId,
+                        tripId,
+                    },
+                },
+                select: {
+                    trip: {
+                        select: {
+                            itineraries: {
+                                where: {
+                                    id: itId,
+                                },
+                                include: {
+                                    places: {
+                                        select: {
+                                            place: true,
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            });
+
+            return { itinerary: res.trip.itineraries[0] };
+        } catch (err) {
+            throw new HttpException(
+                EMsgExpn.INY_NOT_FOUND,
+                HttpStatus.BAD_REQUEST,
+            );
+        }
+    }
+
+    getTripItineraries = async ({ userId, tripId }): Promise<any> => {
+        try {
+            const { trip: itineraries } =
+                await this.prisma.tripsOnUsers.findUnique({
                     where: {
                         userId_tripId: {
                             userId,
                             tripId,
                         },
                     },
-                    select: {
+                    include: {
                         trip: {
-                            select: {
-                                itineraries: { select: { id: true } },
-                            },
-                        },
-                    },
-                });
-                return res;
-            };
-
-            const { id, lat, lon, tags } = content;
-            const itinaryIdInt = itineraryId as number;
-
-            const queryUpsertPlaceToItinerary = async () =>
-                this.prisma.place.upsert({
-                    where: {
-                        idApi: id,
-                    },
-                    update: {
-                        itineraries: {
-                            create: {
-                                itinerary: {
-                                    connect: { id: itinaryIdInt },
-                                },
-                            },
-                        },
-                    },
-                    create: {
-                        idApi: content.id,
-                        lat: lat,
-                        lng: lon,
-                        tags,
-                        itineraries: {
-                            create: {
-                                itinerary: {
-                                    connect: { id: itinaryIdInt },
+                            include: {
+                                itineraries: {
+                                    select: {
+                                        id: true,
+                                        tripId: true,
+                                        resumeFile: true,
+                                    },
                                 },
                             },
                         },
                     },
                 });
+            return itineraries;
+        } catch (err) {
+            throw new HttpException(
+                EMsgExpn.INY_NOT_FOUND,
+                HttpStatus.BAD_REQUEST,
+            );
+        }
+    };
 
-            return await this.prisma.$transaction(async () => {
-                const { trip } = await ensureUserOwnItinerary();
+    // getTripItineraries = async ({ userId, tripId }): Promise<any> => {
+    //     try {
+    //         const { trip: itineraries } =
+    //             await this.prisma.tripsOnUsers.findUnique({
+    //                 where: {
+    //                     userId_tripId: {
+    //                         userId,
+    //                         tripId,
+    //                     },
+    //                 },
+    //                 select: {
+    //                     trip: {
+    //                         select: {
+    //                             itineraries: { select: { resumeFile: true } },
+    //                         },
+    //                     },
+    //                 },
+    //             });
+    //         return itineraries;
+    //     } catch (err) {
+    //         throw new HttpException(
+    //             EMsgExpn.INY_NOT_FOUND,
+    //             HttpStatus.BAD_REQUEST,
+    //         );
+    //     }
+    // };
 
-                const userOwnItinerary = trip.itineraries.some(
-                    (el) => el.id == itinaryIdInt,
-                );
-                if (!userOwnItinerary) {
-                    console.error('User not owner of the repo');
-                    throw new HttpException('Error', HttpStatus.BAD_REQUEST);
-                }
-                const res = await queryUpsertPlaceToItinerary();
-                return res;
+    private upsertPlace = async ({ content, itineraryId }): Promise<any> => {
+        const { id, lat, lon, tags } = content;
+
+        try {
+            const res = await this.prisma.place.upsert({
+                where: {
+                    idApi: id,
+                },
+                update: {
+                    itineraries: {
+                        create: {
+                            itinerary: {
+                                connect: { id: itineraryId as number },
+                            },
+                        },
+                    },
+                },
+                create: {
+                    idApi: content.id,
+                    lat: lat,
+                    lng: lon,
+                    tags,
+                    itineraries: {
+                        create: {
+                            itinerary: {
+                                connect: { id: itineraryId as number },
+                            },
+                        },
+                    },
+                },
             });
+            return res;
         } catch (err) {
             let msg = 'Error';
-            if (err instanceof Prisma.PrismaClientKnownRequestError) {
-                if (err.code == 'P2002') {
-                    msg = 'Already selected';
-                }
+            let code = HttpStatus.INTERNAL_SERVER_ERROR;
+
+            if (
+                err instanceof Prisma.PrismaClientKnownRequestError &&
+                err.code == 'P2002'
+            ) {
+                msg = EMsgExpn.INY_NOT_FOUND;
+                code = HttpStatus.BAD_REQUEST;
+            }
+            throw new HttpException(msg, code);
+        }
+    };
+
+    private ensureUserHasItinerary = ({ itineraries, itineraryId }): void => {
+        const hasItinerary = itineraries.some(
+            (itinerary) => itinerary.id === (itineraryId as number),
+        );
+
+        if (!hasItinerary) {
+            console.error('ensureUserHasItinerary failed');
+            throw new HttpException(
+                'Itinerary not found',
+                HttpStatus.BAD_REQUEST,
+            );
+        }
+    };
+
+    async savePlace({ userId, tripId, itineraryId, content }) {
+        try {
+            const res = await this.prisma.$transaction(async () => {
+                const { itineraries } = await this.getTripItineraries({
+                    userId,
+                    tripId,
+                });
+
+                this.ensureUserHasItinerary({ itineraries, itineraryId });
+                const res = await this.upsertPlace({ content, itineraryId });
+                return res;
+            });
+            return res;
+        } catch (err) {
+            let msg = 'Error';
+
+            if (
+                err instanceof HttpException &&
+                Object.values(EMsgExpn).includes(err.getResponse() as EMsgExpn)
+            ) {
+                msg = err.getResponse() as string;
+            }
+            throw new HttpException(msg, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    async saveItineraryFile({ file, userId, tripId, itineraryId }) {
+        try {
+            const { itineraries } = await this.getTripItineraries({
+                userId,
+                tripId,
+            });
+
+            this.ensureUserHasItinerary({ itineraries, itineraryId });
+
+            const res = await this.prisma.resumeFile.upsert({
+                where: {
+                    itineraryId,
+                },
+                update: {},
+                create: {
+                    itinerary: {
+                        connect: { id: itineraryId as number },
+                    },
+                    data: file.buffer,
+                },
+            });
+            return res;
+        } catch (err) {
+            let msg = 'Error';
+            if (
+                err instanceof HttpException &&
+                Object.values(EMsgExpn).includes(err.getResponse() as EMsgExpn)
+            ) {
+                msg = err.getResponse() as string;
             }
             throw new HttpException(msg, HttpStatus.INTERNAL_SERVER_ERROR);
         }

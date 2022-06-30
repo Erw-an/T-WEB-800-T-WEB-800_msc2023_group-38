@@ -5,6 +5,7 @@ import {
     HttpStatus,
     Injectable,
     NotFoundException,
+    NotImplementedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AxiosRequestConfig } from 'axios';
@@ -72,7 +73,7 @@ export class GeoService {
                 break;
             case 'sleep':
                 //TODO
-                throw new NotFoundException();
+                throw new NotImplementedException();
             default:
                 throw new NotFoundException();
         }

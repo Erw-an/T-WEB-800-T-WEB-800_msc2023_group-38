@@ -6,6 +6,7 @@ import Step from '../../share-components/Step';
 import CityList from '../city/CityList';
 import Planner from '../planner/Planner';
 import MapView from '../map/MapView';
+import ItinerarySaver from '../itinerary/ItinerarySaver';
 
 function StepContainer() {
     const [stepState, setStepState] = useState(1);
@@ -97,6 +98,14 @@ function StepContainer() {
                         // amenity={selected.label}
                     />
                 </div>
+            )}
+            {stepState === 4 && (
+                <ItinerarySaver
+                    positionEnd={positionEnd}
+                    adresseStart={adressStart}
+                    adresseEnd={adressEnd}
+                    dirSteps={dirSteps}
+                />
             )}
         </div>
     );

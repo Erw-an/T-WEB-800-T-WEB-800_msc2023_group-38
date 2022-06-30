@@ -65,7 +65,14 @@ function Planner({
 }
 
 Planner.propTypes = {
-    sharedState: PropTypes.any.isRequired,
+    navigateToItinerarySaver: PropTypes.func.isRequired,
+    sharedState: PropTypes.shape({
+        adressEnd: PropTypes.any,
+        positionEnd: PropTypes.shape({
+            lat: PropTypes.any,
+            lng: PropTypes.any,
+        }),
+    }).isRequired,
 };
 
 export default Planner;
