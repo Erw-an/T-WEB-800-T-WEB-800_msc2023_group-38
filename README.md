@@ -58,4 +58,16 @@ For API project:
 - LF end of line
 - Run `npm run lint` to conform to our lint rules
 
+## Deploy 
+
+To Deploy the app on  Heroku, you must synchronise the  mirrored repository
+
+mirrored repository : https://github.com/Erw-an/T-WEB-800-T-WEB-800_msc2023_group-38
+
+Command to synchronise :
+  ```
+  git fetch origin
+  git push secondary --all
+  ```
+
 ## 🗃️ Resources
