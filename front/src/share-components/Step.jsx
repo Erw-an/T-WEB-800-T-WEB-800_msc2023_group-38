@@ -1,17 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Step({ currentStep }) {
+function Step({ currentStep, setStep }) {
     return (
-        <div>
+        <div className="">
             <h2 className="sr-only">Steps</h2>
-
             <div>
-                <ol className="grid grid-cols-1 overflow-hidden text-sm text-gray-500 border border-gray-100 divide-x divide-gray-100 rounded-lg sm:grid-cols-3">
-                    <li
-                        className={`flex ${
+                <ol className="shadow-md grid grid-cols-1 overflow-hidden text-sm text-gray-500 border border-gray-100 divide-x divide-gray-100 rounded-lg sm:grid-cols-3">
+                    <button
+                        className={`flex cursor-pointer ${
                             currentStep === 1 ? 'bg-white' : 'bg-gray-100'
                         } items-center justify-center p-4`}
+                        onClick={() => setStep(1)}
+                        onKeyDown={() => setStep(1)}
+                        type="button"
                     >
                         <svg
                             className="flex-shrink-0 mr-2 w-7 h-7"
@@ -40,12 +42,15 @@ function Step({ currentStep }) {
                                 Some info about you.{' '}
                             </small>
                         </p>
-                    </li>
+                    </button>
 
-                    <li
-                        className={`relative ${
+                    <button
+                        className={`relative cursor-pointer ${
                             currentStep === 2 ? 'bg-white' : 'bg-gray-100'
                         } flex items-center justify-center p-4 `}
+                        onClick={() => setStep(2)}
+                        onKeyDown={() => setStep(2)}
+                        type="button"
                     >
                         <span
                             className={`absolute hidden w-4 h-4 rotate-45 -translate-y-1/2 
@@ -91,12 +96,15 @@ function Step({ currentStep }) {
                                 Where we sending it?{' '}
                             </small>
                         </p>
-                    </li>
+                    </button>
 
-                    <li
-                        className={`flex ${
+                    <button
+                        className={`flex cursor-pointer ${
                             currentStep === 3 ? 'bg-white' : 'bg-gray-100'
                         } items-center justify-center p-4 `}
+                        onClick={() => setStep(3)}
+                        onKeyDown={() => setStep(3)}
+                        type="button"
                     >
                         <svg
                             className="flex-shrink-0 mr-2 w-7 h-7"
@@ -122,7 +130,7 @@ function Step({ currentStep }) {
                             </strong>
                             <small className="mt-1"> Show us the money. </small>
                         </p>
-                    </li>
+                    </button>
                 </ol>
             </div>
         </div>
@@ -131,5 +139,6 @@ function Step({ currentStep }) {
 
 Step.propTypes = {
     currentStep: PropTypes.number.isRequired,
+    setStep: PropTypes.func.isRequired,
 };
 export default Step;

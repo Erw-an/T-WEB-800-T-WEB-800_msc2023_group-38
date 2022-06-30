@@ -9,7 +9,7 @@ function Card({ onChange, placeholder, value, type }) {
         >
             <input
                 onChange={(e) => onChange(e)}
-                className="z-50 w-full px-0 pt-3.5 pb-0 text-sm placeholder-transparent border-blue-200 !outline-none border-none focus:ring-0 peer"
+                className="z-50 w-full px-0 pt-3.5 pb-0 font-semibold text-sm placeholder-transparent border-blue-200 !outline-none border-none focus:ring-0 peer"
                 id="name"
                 type={type}
                 placeholder={placeholder}

@@ -1,11 +1,12 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import React from 'react';
 import planerDown from '../utils/icons/planerDown.svg';
 import planerUp from '../utils/icons/planerUp.svg';
 
-function Card(planeUp) {
+function Card({ done }) {
+    console.log('done:', done);
     return (
-        <article className="p-6 bg-white sm:p-8 rounded-xl ring ring-indigo-50 shadow-lg m-6">
+        <article className="p-6 bg-white sm:p-8 rounded-xl ring ring-indigo-50 shadow-md m-6">
             <div className="flex items-start">
                 <div
                     className="hidden sm:grid sm:h-20 sm:w-20 sm:shrink-0 sm:place-content-center sm:rounded-full sm:border-2 sm:border-indigo-500"
@@ -18,7 +19,7 @@ function Card(planeUp) {
                         <span className="h-6 w-0.5 rounded-full bg-indigo-500" />
                         <span className="h-8 w-0.5 rounded-full bg-indigo-500" /> */}
                         <img
-                            src={planeUp ? planerUp : planerDown}
+                            src={done === false ? planerUp : planerDown}
                             alt="planer"
                         />
                     </div>
@@ -93,23 +94,7 @@ function Card(planeUp) {
     );
 }
 
-// Card.propTypes = {
-//     title: PropTypes.shape({
-//         tags: PropTypes.shape({
-//             name: PropTypes.string,
-//         }),
-//     }).isRequired,
-
-//     type: PropTypes.shape({
-//         tags: PropTypes.shape({
-//             name: PropTypes.string,
-//         }),
-//     }).isRequired,
-
-//     desc: PropTypes.shape({
-//         tags: PropTypes.shape({
-//             name: PropTypes.string,
-//         }),
-//     }).isRequired,
-// };
+Card.propTypes = {
+    done: PropTypes.bool.isRequired,
+};
 export default Card;

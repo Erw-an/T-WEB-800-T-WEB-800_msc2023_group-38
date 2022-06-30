@@ -3,19 +3,23 @@ import React, { useCallback, useEffect, useState } from 'react';
 import api from '../../api';
 import SuggestionSearchItem from './SuggestionSearchItem';
 import InputText from '../../share-components/InputText';
-import Step from '../../share-components/Step';
+import ButtonArrow from '../../share-components/ButtonArrow';
+import CardSm from '../../share-components/CardSm';
 
 function CityList({
     adressStartProps,
     adressEndProps,
     positionStartProps,
     positionEndProps,
-    navigateToPlace,
+    setStepState,
 }) {
     const [suggestionsStart, setSuggestionsStart] = useState([]);
     const [suggestionsEnd, setSuggestionsEnd] = useState([]);
     const [directionSteps, setDirectionSteps] = useState([]);
     const [error, setError] = useState('');
+
+    const [newTrip, setNewTrip] = useState(null);
+    console.log('newTrip:', newTrip);
 
     // Inherited state
     const { positionStart, setPositionStart } = positionStartProps;
@@ -116,130 +120,121 @@ function CityList({
         }
     };
 
-    // const handleClick = async () => {
-    //     try {
-    //         const res = await api.tripService.createTrip();
-    //         setNewTrip(res);
-    //         setTimeout(() => navigateToDestination(), 1500);
-    //     } catch (e) {
-    //         setError(e.message);
-    //         setNewTrip(null);
-    //     }
-    // };
+    const createNewTrip = async () => {
+        try {
+            const res = await api.tripService.createTrip();
+            setNewTrip(res);
+        } catch (e) {
+            setError(e.message);
+            setNewTrip(null);
+        }
+    };
 
     const saveItinerary = async () => {
+        await createNewTrip();
         try {
             const itinerary = {
                 coords: { adressStart, adressEnd, positionStart, positionEnd },
                 directionSteps,
             };
             await api.tripService.saveItinerary(itinerary);
-            navigateToPlace();
+            setStepState(2);
         } catch (err) {
             setError(err.message);
         }
     };
     return (
         <>
-            <div className="my-3 mx-44 ">
-                <div className="mb-12 mt-12">
-                    <Step currentStep={1} />
+            <div className="bg-white min-h-60 py-12 rounded-lg shadow-md mt-3">
+                <div className=" mx-44 ">
+                    <InputText
+                        placeholder="Start destination"
+                        onChange={(e) => setInputStart(e)}
+                        value={adressStart}
+                        type="text"
+                    />
+                    <div className="relative">
+                        {suggestionsStart.length > 0 && (
+                            <div className="absolute z-10 bg-white w-full rounded-md p-3 border-2 border-gray-200 shadow-lg">
+                                {suggestionsStart.map((elem) => (
+                                    <SuggestionSearchItem
+                                        key={elem.osm_id}
+                                        displayAddress={elem.display_address}
+                                        onClick={() =>
+                                            handleAdressOnclick(
+                                                true,
+                                                {
+                                                    lat: elem.lat,
+                                                    lng: elem.lon,
+                                                },
+                                                elem.display_address,
+                                            )
+                                        }
+                                    />
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
-
-                {/* <h3>Start</h3>
-                <input
-                    onChange={(e) => optimizedDebounceStart(e)}
-                    type="text"
-                    placeholder="Start destination"
-                /> */}
-
-                <InputText
-                    placeholder="Start destination"
-                    onChange={(e) => setInputStart(e)}
-                    value={adressStart}
-                    // value=
-                />
-                <div className="relative">
-                    {suggestionsStart.length > 0 && (
-                        <div className="absolute z-10 bg-white w-full rounded-md p-3 border-2 border-gray-200 shadow-lg">
-                            {suggestionsStart.map((elem) => (
-                                <SuggestionSearchItem
-                                    key={elem.osm_id}
-                                    displayAddress={elem.display_address}
-                                    onClick={() =>
-                                        handleAdressOnclick(
-                                            true,
-                                            {
-                                                lat: elem.lat,
-                                                lng: elem.lon,
-                                            },
-                                            elem.display_address,
-                                        )
-                                    }
-                                />
-                            ))}
-                        </div>
-                    )}
+                <div className="my-3 mx-44">
+                    <InputText
+                        placeholder="End destination"
+                        onChange={(e) => setInputEnd(e)}
+                        value={adressEnd}
+                        type="text"
+                    />
+                    <div className="relative">
+                        {suggestionsEnd.length > 0 && (
+                            <div className="absolute z-10 bg-white w-full rounded-md p-3 border-2 border-gray-200 shadow-lg">
+                                {suggestionsEnd.map((elem) => (
+                                    <SuggestionSearchItem
+                                        key={elem.osm_id}
+                                        displayAddress={elem.display_address}
+                                        onClick={() =>
+                                            handleAdressOnclick(
+                                                false,
+                                                {
+                                                    lat: elem.lat,
+                                                    lng: elem.lon,
+                                                },
+                                                elem.display_address,
+                                            )
+                                        }
+                                    />
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
-            </div>
-            <div className="my-3 mx-44">
-                {/* <h3>End</h3>
-                <input
-                    onChange={(e) => optimizedDebounceEnd(e)}
-                    type="text"
-                    placeholder="Start destination"
-                /> */}
-                <InputText
-                    placeholder="End destination"
-                    onChange={(e) => setInputEnd(e)}
-                    value={adressEnd}
-                />
-                <div className="relative">
-                    {suggestionsEnd.length > 0 && (
-                        <div className="absolute z-10 bg-white w-full rounded-md p-3 border-2 border-gray-200 shadow-lg">
-                            {suggestionsEnd.map((elem) => (
-                                <SuggestionSearchItem
-                                    key={elem.osm_id}
-                                    displayAddress={elem.display_address}
-                                    onClick={() =>
-                                        handleAdressOnclick(
-                                            false,
-                                            {
-                                                lat: elem.lat,
-                                                lng: elem.lon,
-                                            },
-                                            elem.display_address,
-                                        )
-                                    }
-                                />
-                            ))}
-                        </div>
-                    )}
+                <div className="flex justify-center w-full mt-12">
+                    <div />
+                    <ButtonArrow
+                        title="Next"
+                        onClick={saveItinerary}
+                        active={positionSelected}
+                    />
                 </div>
             </div>
-            <div>
-                {/* <h4>Direction steps</h4> */}
-                {/* <p>Total {directionSteps.length}</p> */}
-                {directionSteps.length > 0 &&
-                    directionSteps.map((step) => (
-                        <div>
-                            {/* <p>Distance {step.distance}</p>
-                            <p>Duration {step.duration}</p> */}
-                            <p>{step.name}</p>
-                            <p>{step.instruction}</p>
-                            <p>
-                                -----------------------------------------------------------------------
-                            </p>
+            <div className="mt-12">
+                {directionSteps.length > 0 && (
+                    <>
+                        <div className="text-center mb-6">
+                            <h2 className=" text-lg font-medium sm:text-xl">
+                                Roadmap
+                            </h2>
                         </div>
-                    ))}
+                        {directionSteps.map((step) => (
+                            <div className="my-3 mx-60">
+                                <CardSm
+                                    title={step.name}
+                                    desc={step.instruction}
+                                />
+                            </div>
+                        ))}
+                    </>
+                )}
             </div>
             <p>{error}</p>
-
-            {positionSelected && (
-                <button type="button" onClick={saveItinerary}>
-                    Next
-                </button>
-            )}
         </>
     );
 }
@@ -253,7 +248,6 @@ CityList.propTypes = {
         adressStart: PropTypes.string,
         setAdressStart: PropTypes.func,
     }).isRequired,
-    navigateToPlace: PropTypes.func.isRequired,
     positionEndProps: PropTypes.shape({
         // eslint-disable-next-line react/forbid-prop-types
         positionEnd: PropTypes.object,
@@ -264,6 +258,7 @@ CityList.propTypes = {
         positionStart: PropTypes.object,
         setPositionStart: PropTypes.func,
     }).isRequired,
+    setStepState: PropTypes.func.isRequired,
 };
 
 export default CityList;
