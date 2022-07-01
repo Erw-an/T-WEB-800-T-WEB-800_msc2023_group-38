@@ -58,13 +58,15 @@ function MapView({ lat, lng, data, setError, setStepState }) {
                     />{' '}
                     <Markers data={data} onClickMarker={onClickMarker} />
                 </MapContainer>
-                <ButtonArrow
-                    title="Next"
-                    onClick={() => {
-                        setStepState(4);
-                    }}
-                    // active={positionSelected}
-                />
+                <div className="flex justify-center mt-5">
+                    <ButtonArrow
+                        title="Next"
+                        onClick={() => {
+                            setStepState(4);
+                        }}
+                        // active={positionSelected}
+                    />
+                </div>
             </div>
         </>
     );

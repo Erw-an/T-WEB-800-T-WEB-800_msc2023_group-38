@@ -14,7 +14,7 @@ import TripItem from './components/trip/TripItem';
 function App() {
     const navigateTo = useNavigate();
 
-    const noDashbordPath = ['/', '/signUp'];
+    const noDashbordPath = ['/', '/signUp', '/trip/'];
 
     return (
         <div className="App">
@@ -43,38 +43,32 @@ function App() {
                     <Route
                         path="/trip"
                         element={
-                            // <Dashboard title="My Trips">
                             <Trip
                                 done={false}
                                 navigateToDestination={() => {
                                     navigateTo('/destination');
                                 }}
                             />
-                            // </Dashboard>
                         }
                     />
                     <Route
                         path="/destination"
                         element={
-                            // <Dashboard title="Planifier">
                             <StepContainer
                                 navigateToTrip={() => {
                                     navigateTo('/trip');
                                 }}
                             />
-                            // </Dashboard>
                         }
                     />
                     <Route
                         path="/trip-done"
                         element={
-                            // <Dashboard title="Planifier">
                             <Trip
                                 navigateToDestination={() => {
                                     navigateTo('/destination');
                                 }}
                             />
-                            // </Dashboard>
                         }
                     />
                     <Route path="/trip/:id" element={<TripItem />} />

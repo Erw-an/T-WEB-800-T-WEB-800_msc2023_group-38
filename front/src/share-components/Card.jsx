@@ -33,7 +33,7 @@ function Card({ done, onClick }) {
                             onClick={() => onClick()}
                             className="hover:underline"
                         >
-                            Voire la fiche recap
+                            See resume {' >'}
                         </button>
                     </h2>
 

@@ -5,6 +5,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../../api';
 
+import Button from '../../share-components/Button';
+import download from '../../utils/icons/download.svg';
+import add from '../../utils/icons/add.svg';
+
 function TripItem() {
     const { id } = useParams();
 
@@ -59,22 +63,29 @@ function TripItem() {
 
     return (
         <>
-            <button type="button" onClick={() => console.log('ok')}>
-                Add New Itinerary
-            </button>
+            <div className="flex justify-center mx-6">
+                <div className="w-3/12">
+                    <Button
+                        title="Add New Itinerary"
+                        icon={add}
+                        onClick={() => console.log('ok')}
+                    />
+                </div>
+                <div className="w-7/12" />
+                <div className="w-2/12">
+                    <Button
+                        title="Download"
+                        icon={download}
+                        onClick={() => console.log('To download')}
+                    />
+                </div>
+            </div>
             <div id="itinerary">
-                <h3>Itinerary List</h3>
                 {/* <p>{error}</p> */}
                 {itineraries &&
                     [...itineraries].map(([key, value]) => (
                         <img src={value.b64String} alt="" />
                     ))}
-                <button
-                    type="button"
-                    onClick={() => console.log('To download')}
-                >
-                    Download
-                </button>
             </div>
         </>
     );
