@@ -7,6 +7,11 @@ import domtoimage from 'dom-to-image';
 import 'leaflet/dist/leaflet.css';
 import api from '../../api';
 import PreviewMarkers from './marker/PreviewMarkers';
+import CardSm from '../../share-components/CardSm';
+import CardPlace from '../../share-components/CardPlace';
+import Button from '../../share-components/Button';
+
+import save from '../../utils/icons/save.svg';
 
 function ItinerarySaver({
     navigateToTrip,
@@ -51,53 +56,74 @@ function ItinerarySaver({
 
     return (
         <>
-            <div id="itinerary">
-                <h3>Itinerary resume</h3>
-                <p>{error}</p>
-                {data && (
-                    <>
-                        <MapContainer
-                            center={{ lat, lng }}
-                            zoom={zoom}
-                            scrollWheelZoom={false}
-                        >
-                            <TileLayer
-                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                            />{' '}
-                            <PreviewMarkers data={data.places} />
-                        </MapContainer>
-
+            <div className="flex justify-between mt-5 -mb-5 mx-5">
+                <div />
+                <div className="w-2/12">
+                    <Button onClick={sendFile} title="Save" icon={save} />
+                </div>
+            </div>
+            <div id="itinerary" className=" mx-5 mt-12 bg-white rounded-lg">
+                <div className="m-5">
+                    <p>{error}</p>
+                    {data && (
                         <>
-                            <h3>Itinerary infos :</h3>
-                            <p>Itinerary created at : {data.createdAt}</p>
-                            <p>Start from :{adresseStart}</p>
-                            <p>Finish to :{adresseEnd}</p>
-                            <h4>Places to visit :</h4>
-                            {data.places.map((elem) => {
-                                const { place: tag } = elem;
-                                return (
-                                    <div>
-                                        {JSON.stringify(tag)}{' '}
-                                        <p>
-                                            -----------------------------------------------------------------------
-                                        </p>
-                                    </div>
-                                );
-                            })}
+                            <section>
+                                <div className="max-w-screen-xl px-4 -mt-8 py-16 sm:px-6 lg:px-8">
+                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-8 lg:gap-x-16 lg:items-center">
+                                        <div className="max-w-lg mx-auto text-center lg:text-left lg:mx-0">
+                                            <h2 className="text-3xl font-bold sm:text-4xl">
+                                                Trip resume
+                                            </h2>
 
-                            <h4>Directions steps :</h4>
-                            {dirSteps.map((step) => (
-                                <div>
-                                    <div>{JSON.stringify(step)}</div>
-                                    <p>
-                                        -----------------------------------------------------------------------
-                                    </p>
+                                            <p className="mt-4 text-gray-600 w-full">
+                                                <p>
+                                                    <strong> From : </strong>{' '}
+                                                    {adresseStart}
+                                                </p>
+                                                <p>
+                                                    {' '}
+                                                    <strong>To : </strong>
+                                                    {adresseEnd}
+                                                </p>
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-                            ))}
+                            </section>
+                            <div className="flex">
+                                <MapContainer
+                                    center={{ lat, lng }}
+                                    zoom={zoom}
+                                    scrollWheelZoom={false}
+                                    className="w-full rounded-md"
+                                >
+                                    <TileLayer
+                                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                                    />{' '}
+                                    <PreviewMarkers data={data.places} />
+                                </MapContainer>
+                                <div className="ml-4 bg-gray-50 p-5 rounded-lg">
+                                    {data.places.map((info) => (
+                                        // const { place: tag } = elem;
+                                        <CardPlace info={info} />
+                                    ))}
+                                </div>
+                            </div>
+
+                            <>
+                                {dirSteps.map((step) => (
+                                    <div className="my-3">
+                                        <CardSm
+                                            title={step.name}
+                                            desc={step.instruction}
+                                        />
+                                    </div>
+                                ))}
+                            </>
                         </>
-                    </>
-                )}
+                    )}
+                </div>
             </div>
             <button type="button" onClick={sendFile}>
                 Save
