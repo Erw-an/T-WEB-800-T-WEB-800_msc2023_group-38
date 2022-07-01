@@ -7,8 +7,9 @@ import Markers from './marker/VenueMarkers';
 import api from '../../api';
 
 import './map.css';
+import ButtonArrow from '../../share-components/ButtonArrow';
 
-function MapView({ lat, lng, data, setError }) {
+function MapView({ lat, lng, data, setError, setStepState }) {
     const [msg, setMsg] = useState('');
 
     const currentLocation = { lat, lng };
@@ -57,6 +58,13 @@ function MapView({ lat, lng, data, setError }) {
                     />{' '}
                     <Markers data={data} onClickMarker={onClickMarker} />
                 </MapContainer>
+                <ButtonArrow
+                    title="Next"
+                    onClick={() => {
+                        setStepState(4);
+                    }}
+                    // active={positionSelected}
+                />
             </div>
         </>
     );
@@ -67,5 +75,6 @@ MapView.propTypes = {
     lat: PropTypes.string.isRequired,
     lng: PropTypes.string.isRequired,
     setError: PropTypes.func.isRequired,
+    setStepState: PropTypes.func.isRequired,
 };
 export default MapView;

@@ -1,4 +1,5 @@
 // import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 
 // comp
@@ -8,8 +9,10 @@ import Planner from '../planner/Planner';
 import MapView from '../map/MapView';
 import ItinerarySaver from '../itinerary/ItinerarySaver';
 
-function StepContainer() {
+function StepContainer({ navigateToTrip }) {
     const [stepState, setStepState] = useState(1);
+
+    const [dirSteps, setDirSteps] = useState({});
 
     useEffect(() => {
         setStepState(1);
@@ -61,6 +64,7 @@ function StepContainer() {
                         }}
                         adressEndProps={{ adressEnd, setAdressEnd }}
                         setStepState={setStepState}
+                        dirStepsProps={{ dirSteps, setDirSteps }}
                     />
                 </div>
             )}
@@ -95,6 +99,7 @@ function StepContainer() {
                         data={data}
                         lat={positionEnd.lat}
                         lng={positionEnd.lng}
+                        setStepState={setStepState}
                         // amenity={selected.label}
                     />
                 </div>
@@ -105,11 +110,15 @@ function StepContainer() {
                     adresseStart={adressStart}
                     adresseEnd={adressEnd}
                     dirSteps={dirSteps}
+                    navigateToTrip={navigateToTrip}
                 />
             )}
         </div>
     );
 }
 
-StepContainer.propTypes = {};
+StepContainer.propTypes = {
+    navigateToTrip: PropTypes.func.isRequired,
+};
+
 export default StepContainer;

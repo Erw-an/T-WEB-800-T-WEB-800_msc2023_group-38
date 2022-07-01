@@ -46,7 +46,7 @@ const getItinerary = async () => {
             throw new Error('Information missing');
         }
         const { data } = await axiosInstance.get(
-            `/${tripId}/itinerary/${itId}`,
+            `/trip/${tripId}/itinerary/${itId}`,
         );
 
         return data;
@@ -63,7 +63,7 @@ const getItineraries = async () => {
         if (!tripId) {
             throw new Error('Information missing');
         }
-        const { data } = await axiosInstance.get(`/${tripId}/itinerary/`);
+        const { data } = await axiosInstance.get(`/trip/${tripId}/itinerary/`);
 
         return data;
     } catch (error) {
@@ -81,7 +81,7 @@ const saveItineraryFile = async ({ formData }) => {
             throw new Error('Information missing');
         }
         const { data } = await axiosInstance.patch(
-            `/${tripId}/itinerary/${itId}`,
+            `/trip/${tripId}/itinerary/${itId}`,
             formData,
         );
 

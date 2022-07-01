@@ -57,7 +57,11 @@ function App() {
                         path="/destination"
                         element={
                             // <Dashboard title="Planifier">
-                            <StepContainer />
+                            <StepContainer
+                                navigateToTrip={() => {
+                                    navigateTo('/trip');
+                                }}
+                            />
                             // </Dashboard>
                         }
                     />

@@ -65,7 +65,6 @@ function Planner({
 }
 
 Planner.propTypes = {
-    navigateToItinerarySaver: PropTypes.func.isRequired,
     sharedState: PropTypes.shape({
         adressEnd: PropTypes.any,
         positionEnd: PropTypes.shape({

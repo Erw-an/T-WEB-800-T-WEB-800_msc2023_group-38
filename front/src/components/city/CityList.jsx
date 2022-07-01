@@ -220,14 +220,14 @@ function CityList({
             </div>
 
             <div className="mt-12">
-                {directionSteps.length > 0 && (
+                {dirSteps.length > 0 && (
                     <>
                         <div className="text-center mb-6">
                             <h2 className=" text-lg font-medium sm:text-xl">
                                 Roadmap
                             </h2>
                         </div>
-                        {directionSteps.map((step) => (
+                        {dirSteps.map((step) => (
                             <div className="my-3 mx-60">
                                 <CardSm
                                     title={step.name}
@@ -256,7 +256,6 @@ CityList.propTypes = {
         dirSteps: PropTypes.any,
         setDirSteps: PropTypes.func,
     }).isRequired,
-    navigateToPlace: PropTypes.func.isRequired,
     positionEndProps: PropTypes.shape({
         positionEnd: PropTypes.object,
         setPositionEnd: PropTypes.func,
