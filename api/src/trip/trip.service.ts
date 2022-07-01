@@ -22,7 +22,11 @@ export class TripService {
                     userId,
                 },
                 select: {
-                    trip: true,
+                    trip: {
+                        include: {
+                            itineraries: true,
+                        },
+                    },
                 },
             });
 
