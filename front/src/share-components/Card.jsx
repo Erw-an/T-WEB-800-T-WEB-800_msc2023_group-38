@@ -3,8 +3,7 @@ import React from 'react';
 import planerDown from '../utils/icons/planerDown.svg';
 import planerUp from '../utils/icons/planerUp.svg';
 
-function Card({ done }) {
-    console.log('done:', done);
+function Card({ done, onClick }) {
     return (
         <article className="p-6 bg-white sm:p-8 rounded-xl ring ring-indigo-50 shadow-md m-6">
             <div className="flex items-start">
@@ -13,11 +12,6 @@ function Card({ done }) {
                     ariaHidden="true"
                 >
                     <div className="flex items-center gap-1">
-                        {/* <span className="h-8 w-0.5 rounded-full bg-indigo-500" />
-                        <span className="h-6 w-0.5 rounded-full bg-indigo-500" />
-                        <span className="h-4 w-0.5 rounded-full bg-indigo-500" />
-                        <span className="h-6 w-0.5 rounded-full bg-indigo-500" />
-                        <span className="h-8 w-0.5 rounded-full bg-indigo-500" /> */}
                         <img
                             src={done === false ? planerUp : planerDown}
                             alt="planer"
@@ -34,22 +28,25 @@ function Card({ done }) {
                     </strong>
 
                     <h2 className="mt-4 text-lg font-medium sm:text-xl">
-                        <div href="" className="hover:underline">
-                            {' '}
-                            Some Interesting Podcast Title{' '}
-                        </div>
+                        <button
+                            type="button"
+                            onClick={() => onClick()}
+                            className="hover:underline"
+                        >
+                            Voire la fiche recap
+                        </button>
                     </h2>
 
-                    <p className="mt-1 text-sm text-gray-700">
+                    {/* <p className="mt-1 text-sm text-gray-700">
                         Lorem ipsum, dolor sit amet consectetur adipisicing
                         elit. Ipsam nulla amet voluptatum sit rerum, atque, quo
                         culpa ut necessitatibus eius suscipit eum accusamus,
                         aperiam voluptas exercitationem facere aliquid fuga.
                         Sint.
-                    </p>
+                    </p> */}
 
                     <div className="mt-4 sm:flex sm:items-center sm:gap-2">
-                        <div className="flex items-center text-gray-500">
+                        {/* <div className="flex items-center text-gray-500">
                             <svg
                                 className="w-4 h-4"
                                 fill="none"
@@ -67,13 +64,13 @@ function Card({ done }) {
                             <p className="ml-1 text-xs font-medium">
                                 48:32 minutes
                             </p>
-                        </div>
+                        </div> */}
 
-                        <span className="hidden sm:block" ariaHidden="true">
+                        {/* <span className="hidden sm:block" ariaHidden="true">
                             &middot;
-                        </span>
+                        </span> */}
 
-                        <p className="mt-2 text-xs font-medium text-gray-500 sm:mt-0">
+                        {/* <p className="mt-2 text-xs font-medium text-gray-500 sm:mt-0">
                             Featuring{' '}
                             <div className="underline hover:text-gray-700">
                                 Barry
@@ -86,7 +83,7 @@ function Card({ done }) {
                             <div className="underline hover:text-gray-700">
                                 August
                             </div>
-                        </p>
+                        </p> */}
                     </div>
                 </div>
             </div>
@@ -96,5 +93,6 @@ function Card({ done }) {
 
 Card.propTypes = {
     done: PropTypes.bool.isRequired,
+    onClick: PropTypes.func.isRequired,
 };
 export default Card;

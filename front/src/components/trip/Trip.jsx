@@ -1,13 +1,19 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import api from '../../api';
 import Card from '../../share-components/Card';
 
-function Trip({ done, navigateToTripItem }) {
+function Trip({ done }) {
     const [trips, setTrips] = useState([]);
     const [error, setError] = useState();
 
+    const history = useNavigate();
+
+    const navigateToTripItem = (id) => {
+        history(`/trip/${id}`);
+    };
     useEffect(() => {
         (async () => {
             try {
@@ -43,8 +49,6 @@ function Trip({ done, navigateToTripItem }) {
 
 Trip.propTypes = {
     done: PropTypes.bool.isRequired,
-
-    navigateToTripItem: PropTypes.func.isRequired,
 };
 
 export default Trip;
