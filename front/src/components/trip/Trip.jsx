@@ -1,17 +1,24 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import api from '../../api';
+import Card from '../../share-components/Card';
 
-function Trip({ navigateToDestination }) {
+function Trip({ done }) {
     const [trips, setTrips] = useState([]);
     const [error, setError] = useState();
-    const [newTrip, setNewTrip] = useState(null);
 
+    const history = useNavigate();
+
+    const navigateToTripItem = (id) => {
+        history(`/trip/${id}`);
+    };
     useEffect(() => {
         (async () => {
             try {
                 const res = await api.tripService.getTrips();
+                console.log('res:', res);
                 setTrips(res);
             } catch (e) {
                 setError(e.message);
@@ -20,54 +27,28 @@ function Trip({ navigateToDestination }) {
         })();
     }, []);
 
-    const handleClick = async () => {
-        try {
-            const res = await api.tripService.createTrip();
-            setNewTrip(res);
-            setTimeout(() => navigateToDestination(), 1500);
-        } catch (e) {
-            setError(e.message);
-            setNewTrip(null);
-        }
-    };
     return (
         <>
-            <button type="button" onClick={handleClick}>
-                Create a trip
-            </button>
+            <div>
+                {trips.length > 0 &&
+                    trips.map((elem, idx) => (
+                        <Card
+                            done={done}
+                            title={idx}
+                            createdAt={elem.trip.createdAt}
+                            updatedAt={elem.trip.updatedAt}
+                            onClick={() => navigateToTripItem(elem.trip.id)}
+                        />
+                    ))}
+            </div>
 
-            {newTrip ? (
-                <>
-                    <h4>New trip created !</h4>
-                    <>
-                        <p>{newTrip.id}</p>
-                        <p>{newTrip.createdAt}</p>
-                        <p>{newTrip.updatedAt}</p>
-                    </>
-                </>
-            ) : (
-                <div>
-                    <h2>Trips list :</h2>
-                    {trips.length > 0 &&
-                        trips.map((elem, idx) => (
-                            <div>
-                                <p>
-                                    ================================================
-                                </p>
-                                <p>Trip {idx}</p>
-                                <p>Created at :{elem.trip.createdAt}</p>
-                                <p>Updated at :{elem.trip.updatedAt}</p>
-                            </div>
-                        ))}
-                </div>
-            )}
             <p>{error}</p>
         </>
     );
 }
 
 Trip.propTypes = {
-    navigateToDestination: PropTypes.func.isRequired,
+    done: PropTypes.bool.isRequired,
 };
 
 export default Trip;

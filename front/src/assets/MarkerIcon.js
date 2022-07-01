@@ -1,6 +1,6 @@
 import L from 'leaflet';
 
-import iconUrl from '../../../assets/pin.png';
+import iconUrl from './pin.png';
 
 const VenueLocationIcon = L.icon({
     iconUrl,

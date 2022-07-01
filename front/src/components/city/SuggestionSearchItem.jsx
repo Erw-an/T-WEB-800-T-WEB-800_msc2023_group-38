@@ -3,7 +3,7 @@ import React from 'react';
 
 export default function SuggestionSearchItem({ onClick, displayAddress }) {
     return (
-        <div className="suggestion-search-item">
+        <div className="hover:bg-gray-100 duration-150">
             <button onClick={onClick} type="button">
                 {displayAddress}
             </button>

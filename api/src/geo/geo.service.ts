@@ -5,6 +5,7 @@ import {
     HttpStatus,
     Injectable,
     NotFoundException,
+    NotImplementedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AxiosRequestConfig } from 'axios';
@@ -31,7 +32,7 @@ export class GeoService {
     async autoComplete(q: string): Promise<any> {
         const res = this.httpService
             .get(
-                `https://api.locationiq.com/v1/autocomplete.php?key=${this.locationIqApiKEy}&q=${q}&countrycodes=fr&tag=place&accept-language=fr`,
+                `https://api.locationiq.com/v1/autocomplete.php?key=${this.locationIqApiKEy}&dedupe=1&q=${q}&countrycodes=fr&tag=place&accept-language=fr`,
                 this.requestConfig,
             )
             .pipe(
@@ -72,7 +73,7 @@ export class GeoService {
                 break;
             case 'sleep':
                 //TODO
-                throw new NotFoundException();
+                throw new NotImplementedException();
             default:
                 throw new NotFoundException();
         }

@@ -1,21 +1,30 @@
+/* eslint-disable react/forbid-prop-types */
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
 import api from '../../api';
 import SuggestionSearchItem from './SuggestionSearchItem';
+import InputText from '../../share-components/InputText';
+import ButtonArrow from '../../share-components/ButtonArrow';
+import CardSm from '../../share-components/CardSm';
 
 function CityList({
     adressStartProps,
     adressEndProps,
     positionStartProps,
     positionEndProps,
-    navigateToPlace,
+    setStepState,
+    dirStepsProps,
 }) {
     const [suggestionsStart, setSuggestionsStart] = useState([]);
     const [suggestionsEnd, setSuggestionsEnd] = useState([]);
-    const [directionSteps, setDirectionSteps] = useState([]);
+
     const [error, setError] = useState('');
 
+    const [newTrip, setNewTrip] = useState(null);
+    console.log('newTrip:', newTrip);
+
     // Inherited state
+    const { dirSteps, setDirSteps } = dirStepsProps;
     const { positionStart, setPositionStart } = positionStartProps;
     const { positionEnd, setPositionEnd } = positionEndProps;
 
@@ -39,7 +48,7 @@ function CityList({
                 const { steps } =
                     res.content.features[0].properties.segments[0];
 
-                setDirectionSteps(steps);
+                setDirSteps(steps);
             })();
         }
     }, [positionStart, positionEnd]);
@@ -92,6 +101,16 @@ function CityList({
 
     const optimizedDebounceEnd = useCallback(debounce(handleInputEnd, 600), []);
 
+    const setInputStart = (e) => {
+        setAdressStart(e.target.value);
+        optimizedDebounceStart(e);
+    };
+
+    const setInputEnd = (e) => {
+        setAdressEnd(e.target.value);
+        optimizedDebounceEnd(e);
+    };
+
     const handleAdressOnclick = (isStart, pos, adress) => {
         if (isStart) {
             setAdressStart(adress);
@@ -104,95 +123,122 @@ function CityList({
         }
     };
 
+    const createNewTrip = async () => {
+        try {
+            const res = await api.tripService.createTrip();
+            setNewTrip(res);
+        } catch (e) {
+            setError(e.message);
+            setNewTrip(null);
+        }
+    };
+
     const saveItinerary = async () => {
+        await createNewTrip();
         try {
             const itinerary = {
                 coords: { adressStart, adressEnd, positionStart, positionEnd },
-                directionSteps,
+                dirSteps,
             };
-            await api.tripService.saveItinerary(itinerary);
-            navigateToPlace();
+            await api.tripService.saveItinerary({ itinerary });
+            setStepState(2);
         } catch (err) {
             setError(err.message);
         }
     };
     return (
         <>
-            <div>
-                <h3>Start</h3>
-                <input
-                    onChange={(e) => optimizedDebounceStart(e)}
-                    type="text"
-                    placeholder="Start destination"
-                />
-
-                {suggestionsStart.length > 0 &&
-                    suggestionsStart.map((elem) => (
-                        <SuggestionSearchItem
-                            key={elem.osm_id}
-                            displayAddress={elem.display_address}
-                            onClick={() =>
-                                handleAdressOnclick(
-                                    true,
-                                    {
-                                        lat: elem.lat,
-                                        lng: elem.lon,
-                                    },
-                                    elem.display_address,
-                                )
-                            }
-                        />
-                    ))}
+            <div className="bg-white min-h-60 py-12 rounded-lg shadow-md mt-3">
+                <div className=" mx-44 ">
+                    <InputText
+                        placeholder="Start destination"
+                        onChange={(e) => setInputStart(e)}
+                        value={adressStart}
+                        type="text"
+                    />
+                    <div className="relative">
+                        {suggestionsStart.length > 0 && (
+                            <div className="absolute z-10 bg-white w-full rounded-md p-3 border-2 border-gray-200 shadow-lg">
+                                {suggestionsStart.map((elem) => (
+                                    <SuggestionSearchItem
+                                        key={elem.osm_id}
+                                        displayAddress={elem.display_address}
+                                        onClick={() =>
+                                            handleAdressOnclick(
+                                                true,
+                                                {
+                                                    lat: elem.lat,
+                                                    lng: elem.lon,
+                                                },
+                                                elem.display_address,
+                                            )
+                                        }
+                                    />
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+                <div className="my-3 mx-44">
+                    <InputText
+                        placeholder="End destination"
+                        onChange={(e) => setInputEnd(e)}
+                        value={adressEnd}
+                        type="text"
+                    />
+                    <div className="relative">
+                        {suggestionsEnd.length > 0 && (
+                            <div className="absolute z-10 bg-white w-full rounded-md p-3 border-2 border-gray-200 shadow-lg">
+                                {suggestionsEnd.map((elem) => (
+                                    <SuggestionSearchItem
+                                        key={elem.osm_id}
+                                        displayAddress={elem.display_address}
+                                        onClick={() =>
+                                            handleAdressOnclick(
+                                                false,
+                                                {
+                                                    lat: elem.lat,
+                                                    lng: elem.lon,
+                                                },
+                                                elem.display_address,
+                                            )
+                                        }
+                                    />
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+                <div className="flex justify-center w-full mt-12">
+                    <div />
+                    <ButtonArrow
+                        title="Next"
+                        onClick={saveItinerary}
+                        active={positionSelected}
+                    />
+                </div>
             </div>
-            <div>
-                <h3>End</h3>
-                <input
-                    onChange={(e) => optimizedDebounceEnd(e)}
-                    type="text"
-                    placeholder="Start destination"
-                />
 
-                {suggestionsEnd.length > 0 &&
-                    suggestionsEnd.map((elem) => (
-                        <SuggestionSearchItem
-                            key={elem.osm_id}
-                            displayAddress={elem.display_address}
-                            onClick={() =>
-                                handleAdressOnclick(
-                                    false,
-                                    {
-                                        lat: elem.lat,
-                                        lng: elem.lon,
-                                    },
-                                    elem.display_address,
-                                )
-                            }
-                        />
-                    ))}
-            </div>
-            <div>
-                <h4>Direction steps</h4>
-                <p>Total {directionSteps.length}</p>
-                {directionSteps.length > 0 &&
-                    directionSteps.map((step) => (
-                        <div>
-                            <p>Distance {step.distance}</p>
-                            <p>Duration {step.duration}</p>
-                            <p>Instruction {step.instruction}</p>
-                            <p>Name {step.name}</p>
-                            <p>
-                                -----------------------------------------------------------------------
-                            </p>
+            <div className="mt-12">
+                {dirSteps.length > 0 && (
+                    <>
+                        <div className="text-center mb-6">
+                            <h2 className=" text-lg font-medium sm:text-xl">
+                                Roadmap
+                            </h2>
                         </div>
-                    ))}
+                        {dirSteps.map((step) => (
+                            <div className="my-3 mx-60">
+                                <CardSm
+                                    title={step.name}
+                                    desc={step.instruction}
+                                />
+                            </div>
+                        ))}
+                    </>
+                )}
             </div>
             <p>{error}</p>
-
-            {positionSelected && (
-                <button type="button" onClick={saveItinerary}>
-                    Next
-                </button>
-            )}
         </>
     );
 }
@@ -206,17 +252,19 @@ CityList.propTypes = {
         adressStart: PropTypes.string,
         setAdressStart: PropTypes.func,
     }).isRequired,
-    navigateToPlace: PropTypes.func.isRequired,
+    dirStepsProps: PropTypes.shape({
+        dirSteps: PropTypes.any,
+        setDirSteps: PropTypes.func,
+    }).isRequired,
     positionEndProps: PropTypes.shape({
-        // eslint-disable-next-line react/forbid-prop-types
         positionEnd: PropTypes.object,
         setPositionEnd: PropTypes.func,
     }).isRequired,
     positionStartProps: PropTypes.shape({
-        // eslint-disable-next-line react/forbid-prop-types
         positionStart: PropTypes.object,
         setPositionStart: PropTypes.func,
     }).isRequired,
+    setStepState: PropTypes.func.isRequired,
 };
 
 export default CityList;

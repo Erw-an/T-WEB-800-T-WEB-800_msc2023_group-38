@@ -13,6 +13,8 @@ const setAuthToken = (token) => {
 };
 
 const signIn = async ({ email, password }) => {
+    console.log('password:', password);
+    console.log('email:', email);
     try {
         const { data } = await axiosInstance.post(`${BASE_URL}/signin`, {
             email,
@@ -30,5 +32,33 @@ const signIn = async ({ email, password }) => {
     }
 };
 
+const signUp = async ({ email, password, firstName, lastName }) => {
+    console.log('lastName:', lastName);
+    console.log('firstName:', firstName);
+    console.log('password:', password);
+    console.log('email:', email);
+    try {
+        const { data } = await axiosInstance.post(`${BASE_URL}/signup`, {
+            email,
+            password,
+            firstName,
+            lastName,
+        });
+        if (data.access_token) {
+            setAuthToken(data.access_token);
+        } else {
+            throw new Error();
+        }
+        return;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
+const signOut = async () => {
+    setAuthToken();
+};
+
 // eslint-disable-next-line import/prefer-default-export
-export { signIn };
+export { signIn, signOut, signUp };

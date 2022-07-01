@@ -1,7 +1,7 @@
 import { PrismaService } from './../prisma/prisma.service';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { SignInDto } from 'src/dto';
+import { SignInDto, SignUpDto } from 'src/dto';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
@@ -18,6 +18,10 @@ export class AuthService {
             where: { email: dto.email },
         });
 
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(dto.password, salt);
+        console.log('hash:', hash);
+
         if (!user) {
             throw new ForbiddenException('Credentials incorrect');
         }
@@ -27,6 +31,30 @@ export class AuthService {
         if (!isMatch) {
             throw new ForbiddenException('Credentials incorrect');
         }
+        const token = await this.signToken(user.id, user.email);
+        return token;
+    }
+
+    async signUp(dto: SignUpDto): Promise<{ access_token: string }> {
+        const checkUser = await this.prismaService.user.findUnique({
+            where: { email: dto.email },
+        });
+        if (checkUser) {
+            throw new ForbiddenException('Mail already existe');
+        }
+
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(dto.password, salt);
+
+        const user = await this.prismaService.user.create({
+            data: {
+                email: dto.email,
+                firstName: dto.firstName,
+                lastName: dto.lastName,
+                password: hash,
+            },
+        });
+
         const token = await this.signToken(user.id, user.email);
         return token;
     }

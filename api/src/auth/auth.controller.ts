@@ -1,5 +1,5 @@
 import { ValidationPipe } from './../pipes/validation.pipe';
-import { SignInDto } from './../dto/auth.service';
+import { SignInDto, SignUpDto } from './../dto/auth.service';
 import { AuthService } from './auth.service';
 import { Body, Controller, Post, HttpStatus, HttpCode } from '@nestjs/common';
 import {
@@ -32,6 +32,14 @@ export class AuthController {
     @Post('/signin')
     async signIn(@Body(new ValidationPipe()) dto: SignInDto) {
         const res = await this.authService.signIn(dto);
+        return res;
+    }
+
+    @HttpCode(HttpStatus.ACCEPTED)
+    @Post('/signup')
+    async signUp(@Body() dto: SignUpDto) {
+        console.log('dto:', dto);
+        const res = await this.authService.signUp(dto);
         return res;
     }
 }
