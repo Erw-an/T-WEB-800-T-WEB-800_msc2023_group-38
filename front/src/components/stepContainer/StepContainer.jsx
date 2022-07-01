@@ -94,7 +94,7 @@ function StepContainer({ navigateToTrip }) {
                 </div>
             )}
             {stepState === 3 && (
-                <div className="bg-white min-h-60 rounded-lg shadow-md mt-3 w-full">
+                <div className=" min-h-60   mt-3 w-full">
                     <MapView
                         data={data}
                         lat={positionEnd.lat}
