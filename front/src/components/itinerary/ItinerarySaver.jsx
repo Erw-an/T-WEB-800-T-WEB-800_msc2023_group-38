@@ -34,7 +34,7 @@ function ItinerarySaver({
         })();
     }, []);
 
-    const domToImgDll = async () => {
+    const sendFile = async () => {
         let node = document.getElementById('itinerary');
         // eslint-disable-next-line react/no-find-dom-node
         node = ReactDOM.findDOMNode(node);
@@ -99,7 +99,7 @@ function ItinerarySaver({
                     </>
                 )}
             </div>
-            <button type="button" onClick={domToImgDll}>
+            <button type="button" onClick={sendFile}>
                 Save
             </button>
         </>

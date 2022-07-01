@@ -1,8 +1,8 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-unused-vars */
-import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import domtoimage from 'dom-to-image';
 import api from '../../api';
 
 function TripItem() {
@@ -42,6 +42,21 @@ function TripItem() {
         return result;
     };
 
+    const domToImgDll = async (y) => {
+        try {
+            const node = document.getElementById(y);
+            const blob = await domtoimage.toBlob(node);
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = y;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (err) {
+            console.error('oops, something went wrong!', err);
+        }
+    };
+
     useEffect(() => {
         (async () => {
             try {
@@ -67,14 +82,24 @@ function TripItem() {
                 {/* <p>{error}</p> */}
                 {itineraries &&
                     [...itineraries].map(([key, value]) => (
-                        <img src={value.b64String} alt="" />
+                        <>
+                            <img
+                                key={key}
+                                id={`ity-file-${key}`}
+                                src={value.b64String}
+                                alt=""
+                            />
+                            <button
+                                type="button"
+                                onClick={async () =>
+                                    // eslint-disable-next-line no-return-await
+                                    await domToImgDll(`ity-file-${key}`)
+                                }
+                            >
+                                Download
+                            </button>
+                        </>
                     ))}
-                <button
-                    type="button"
-                    onClick={() => console.log('To download')}
-                >
-                    Download
-                </button>
             </div>
         </>
     );
