@@ -20,8 +20,8 @@ jobs:
 
     # Launch test
     - name: test
+      working-directory: ./api
       run: |
-        cd api
         yarn start:test
         yarn test:e2e
         yarn run test:cov
