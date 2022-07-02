@@ -17,21 +17,32 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
+
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres:13
+        # Provide the envirronements for postgres
+        env:
+          POSTGRES_USER: eer-test
+          POSTGRES_PASSWORD: eer-test
+          POSTGRES_DB: eer-test
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       
-      # start api
-      - name: start
-        run: |
-          cd api
-          yarn install
-          yarn start:test
-
       # start test
       
-      - name: start
+      - name: test
         run: |
           yarn test:e2e
           yarn run test:cov
