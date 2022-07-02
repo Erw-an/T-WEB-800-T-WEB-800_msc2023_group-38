@@ -21,6 +21,7 @@ jobs:
     # Launch test
     - name: test
       run: |
+        cd api
         yarn start:test
         yarn test:e2e
         yarn run test:cov
