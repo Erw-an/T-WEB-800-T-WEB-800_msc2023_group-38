@@ -35,16 +35,21 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
+    env: 
+      working-directory: ./api
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       
       # start test
-      
-      - name: test
-        run: |
-          cd api
-          yarn install
-          yarn test:e2e
-          yarn run test:cov
+      - name: install dependencies
+        run: yarn install
+
+      # start test e2e
+      - name: test e2e
+        run: yarn test:e2e
+
+      # start test cov
+      - name: test cov
+        run: yarn run test:cov
