@@ -44,5 +44,7 @@ jobs:
       
       - name: test
         run: |
+          cd api
+          yarn install
           yarn test:e2e
           yarn run test:cov
