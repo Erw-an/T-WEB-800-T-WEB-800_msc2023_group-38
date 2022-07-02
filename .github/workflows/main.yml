@@ -22,11 +22,16 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       
-      # Runs a set of commands using the runners shell
-      - name: test
+      # start api
+      - name: start
         run: |
           cd api
           yarn install
           yarn start:test
+
+      # start test
+      
+      - name: start
+        run: |
           yarn test:e2e
           yarn run test:cov
