@@ -6,7 +6,7 @@ on:
     branches: 
       - master
       - dev
-      - feature/test
+      - feature/*
   pull_request:
     branches: 
       - master
