@@ -41,15 +41,15 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-      
-      # start test
-      - name: install dependencies
-        run: yarn install
-
+  
       # start test e2e
       - name: test e2e
-        run: yarn test:e2e
+        run: |
+          yarn install
+          yarn test:e2e
 
       # start test cov
       - name: test cov
-        run: yarn run test:cov
+        run: |
+          yarn install
+          yarn run test:cov
