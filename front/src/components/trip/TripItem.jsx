@@ -86,14 +86,6 @@ function TripItem() {
                         onClick={() => console.log('ok')}
                     />
                 </div>
-                <div className="w-7/12" />
-                <div className="w-2/12">
-                    <Button
-                        title="Download"
-                        icon={download}
-                        onClick={() => console.log('To download')}
-                    />
-                </div>
             </div>
             <div id="itinerary">
                 {/* <p>{error}</p> */}
@@ -106,15 +98,17 @@ function TripItem() {
                                 src={value.b64String}
                                 alt=""
                             />
-                            <button
-                                type="button"
-                                onClick={async () =>
-                                    // eslint-disable-next-line no-return-await
-                                    await domToImgDll(`ity-file-${key}`)
-                                }
-                            >
-                                Download
-                            </button>
+
+                            <div className="w-2/12">
+                                <Button
+                                    title="Download"
+                                    icon={download}
+                                    onClick={async () =>
+                                        // eslint-disable-next-line no-return-await
+                                        await domToImgDll(`ity-file-${key}`)
+                                    }
+                                />
+                            </div>
                         </>
                     ))}
             </div>
