@@ -1,0 +1,93 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table User {
+  id Int [pk, increment]
+  firstName String [not null]
+  lastName String [not null]
+  email String [unique, not null]
+  password String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  trips TripsOnUsers [not null]
+}
+
+Table Itinerary {
+  id Int [pk, increment]
+  tripId Int [not null]
+  content Json [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  trip Trip [not null]
+  places PlacesOnItineraries [not null]
+  resumeFile ResumeFile
+}
+
+Table ResumeFile {
+  id Int [increment, not null]
+  itineraryId Int [unique, not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  data Bytes [not null]
+  itinerary Itinerary [not null]
+
+  indexes {
+    (id, itineraryId) [pk]
+  }
+}
+
+Table Place {
+  id Int [pk, increment]
+  idApi Int [unique, not null]
+  lat Float [not null]
+  lng Float [not null]
+  tags Json [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  itineraries PlacesOnItineraries [not null]
+}
+
+Table PlacesOnItineraries {
+  itineraryId Int [not null]
+  placeId Int [not null]
+  itinerary Itinerary [not null]
+  place Place [not null]
+
+  indexes {
+    (itineraryId, placeId) [pk]
+  }
+}
+
+Table Trip {
+  id Int [pk, increment]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  itineraries Itinerary [not null]
+  users TripsOnUsers [not null]
+}
+
+Table TripsOnUsers {
+  userId Int [not null]
+  tripId Int [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  trip Trip [not null]
+  user User [not null]
+
+  indexes {
+    (userId, tripId) [pk]
+  }
+}
+
+Ref: Itinerary.tripId > Trip.id [delete: Cascade]
+
+Ref: ResumeFile.itineraryId - Itinerary.id [delete: Cascade]
+
+Ref: PlacesOnItineraries.itineraryId > Itinerary.id [delete: Cascade]
+
+Ref: PlacesOnItineraries.placeId > Place.id [delete: Cascade]
+
+Ref: TripsOnUsers.tripId > Trip.id [delete: Cascade]
+
+Ref: TripsOnUsers.userId > User.id [delete: Cascade]
