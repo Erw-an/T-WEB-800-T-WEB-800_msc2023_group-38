@@ -3,6 +3,8 @@
 epitech-epic-roadtrip is a web application for people who want to enjoy their vacations.
 Whether you are looking for a restaurant or an activity for your trip, everything is on epitech-epic-roadtrip!
 
+https://epitech-epic-roadtrip.herokuapp.com/
+
 ## 👥 Members
 
 -   _TAQUET Erwan_
@@ -57,6 +59,18 @@ For API project:
 -   4 spaces for indentation
 -   LF end of line
 -   Run `npm run lint` to conform to our lint rules
+
+## Deploy 
+
+To Deploy the app on  Heroku, you must synchronise the  mirrored repository
+
+mirrored repository : https://github.com/Erw-an/T-WEB-800-T-WEB-800_msc2023_group-38
+
+Command to synchronise :
+  ```
+  git fetch origin
+  git push secondary --all
+  ```
 
 ## 🗃️ Resources
 
