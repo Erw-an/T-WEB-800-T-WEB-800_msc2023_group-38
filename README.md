@@ -1,7 +1,7 @@
 # epitech-epic-roadtrip
 
 epitech-epic-roadtrip is a web application for people who want to enjoy their vacations.
-Whether you are looking for a restaurant or an activity for your trip, everything is on "???"!
+Whether you are looking for a restaurant or an activity for your trip, everything is on epitech-epic-roadtrip!
 
 ## 👥 Members
 
@@ -60,9 +60,12 @@ For API project:
 
 ## 🗃️ Resources
 
-## Deployment
+api/README.md
+front/README.md
 
-1. Checkout to deploy branch
+## 🚀 Deployment
+
+1. Checkout to the deploy branch
 2. Apply your changes to the branch
 3. Build the front app :
 
@@ -71,13 +74,13 @@ $ yarn build:front:win
 ```
 
 4. Connect to Heroku
-5. Create a new branch with only /api ready for deployment :
+5. Create a new branch ready to deploy :
 
 ```bash
 $ git subtree split --prefix api -b <deploy_branch_name>
 ```
 
-6. Publish the deployment branch ready to Heroku
+6. Publish to Heroku
 
 ```bash
 $ git push heroku <deploy_branch_name>:master
