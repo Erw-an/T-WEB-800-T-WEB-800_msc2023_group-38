@@ -14,12 +14,25 @@ import {
     UploadedFile,
 } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guard';
+import { ApiBadRequestResponse, ApiOperation, ApiQuery } from '@nestjs/swagger';
 
 @UseGuards(JwtGuard)
 @Controller('trip')
 export class TripController {
     constructor(private tripService: TripService) {}
 
+    @ApiOperation({
+        description: 'Endpoint to get trips.',
+    })
+    @ApiQuery({
+        name: 'id',
+        description: 'Trip id',
+        type: Number,
+        required: true,
+    })
+    @ApiBadRequestResponse({
+        description: 'This description is for a 400 response.',
+    })
     @Get()
     async getTrips(@GetUser('id') userId: number) {
         const res = await this.tripService.getTrips(userId);
