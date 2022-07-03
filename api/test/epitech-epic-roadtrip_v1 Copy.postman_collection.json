@@ -1,0 +1,104 @@
+{
+	"info": {
+		"_postman_id": "f2690547-dde4-41f9-809f-63a9b48e1acc",
+		"name": "epitech-epic-roadtrip_v1 copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13794064"
+	},
+	"item": [
+		{
+			"name": "geo",
+			"item": [
+				{
+					"name": "adresses autocomplete",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/geo/adresses/autocomplete?q=toul",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"geo",
+								"adresses",
+								"autocomplete"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "toul"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "sign-in",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test2@test.com\",\r\n    \"password\": \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/signin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1Mzg0MjI0NSwiZXhwIjoxNjUzODQ0NzY1fQ.5iYt2970NMSzajqTEaF8CnmnRmWJJtg31Pwl0-qUx78",
+			"type": "string"
+		}
+	]
+}
