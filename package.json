@@ -8,8 +8,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:front:win": "(if exist .\\api\\front rmdir .\\api\\front /s /q) && yarn --cwd .\\front build --prod && move .\\front\\build .\\api\\front"
-  },
+    "build:front:win": "(if exist .\\api\\front rmdir .\\api\\front /s /q) && yarn --cwd .\\front build --prod && move .\\front\\build .\\api\\front",
+    "build:front:lin": "cd ./front  && yarn install  && yarn build --prod && cp -r ./build ../api/front"
+},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/EpitechMscProPromo2023/T-WEB-800-T-WEB-800_msc2023_group-38.git"
