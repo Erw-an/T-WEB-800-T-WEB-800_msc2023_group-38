@@ -35,6 +35,7 @@ function Trip({ done }) {
                         <Card
                             done={done}
                             title={idx}
+                            itineraries={elem.trip.itineraries}
                             createdAt={elem.trip.createdAt}
                             updatedAt={elem.trip.updatedAt}
                             onClick={() => navigateToTripItem(elem.trip.id)}
