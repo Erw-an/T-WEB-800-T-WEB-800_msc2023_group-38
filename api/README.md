@@ -74,7 +74,7 @@ $ npm run lint
 
 ## Documentation
 
-`http://localhost:3000/swagger`
+`/swagger`
 
 ## Support
 
