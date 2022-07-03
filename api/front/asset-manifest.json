@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/static/css/main.519d7ff4.css",
+    "main.js": "/static/js/main.b4b90fef.js",
+    "static/media/pin.png": "/static/media/pin.5fc45d23d23dc327a69b.png",
+    "static/media/plane.png": "/static/media/plane.65b0841cc828ebeb9580.png",
+    "index.html": "/index.html",
+    "static/media/Planifier.svg": "/static/media/Planifier.b4453001b8dedbb4b1543b0d99e22acc.svg",
+    "static/media/save.svg": "/static/media/save.ecd2b43d2c2ee6124811bf4ef96506e6.svg",
+    "static/media/plane.svg": "/static/media/plane.937d539baeb3fcf04bdb1dcd2cf56345.svg",
+    "static/media/planerUp.svg": "/static/media/planerUp.8edebecdb2dc3ee2bdd2649965b81c4e.svg",
+    "static/media/plane2.svg": "/static/media/plane2.8cbc244f8eb9e542bbac5cf4d962dd17.svg",
+    "static/media/planerDown.svg": "/static/media/planerDown.08339fc89b94442582d01b4b22edff65.svg",
+    "static/media/download.svg": "/static/media/download.ff4a06be075718355bc1bcf4c7688e23.svg",
+    "static/media/add.svg": "/static/media/add.8ba65021ba03e5a8693be765b386eecd.svg",
+    "main.519d7ff4.css.map": "/static/css/main.519d7ff4.css.map",
+    "main.b4b90fef.js.map": "/static/js/main.b4b90fef.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.519d7ff4.css",
+    "static/js/main.b4b90fef.js"
+  ]
+}
