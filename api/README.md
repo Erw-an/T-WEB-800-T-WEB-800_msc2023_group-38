@@ -74,7 +74,17 @@ $ npm run lint
 
 ## Documentation
 
-`http://localhost:3000/swagger`
+`/swagger`
+
+## Database
+
+## Generate the DB schema
+
+```bash
+$ npx prisma generate
+```
+
+![alt text](../doc/eer-api.png)
 
 ## Support
 
