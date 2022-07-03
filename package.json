@@ -1,0 +1,23 @@
+{
+  "name": "t-web-800-t-web-800_msc2023_group-38",
+  "version": "1.0.0",
+  "description": "epitech-epic-roadtrip is a web application for people who want to enjoy their vacations. \r Whether you are looking for a restaurant or an activity for your trip, everything is on \"???\"!",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:front:win": "(if exist .\\api\\front rmdir .\\api\\front /s /q) && yarn --cwd .\\front build --prod && move .\\front\\build .\\api\\front"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EpitechMscProPromo2023/T-WEB-800-T-WEB-800_msc2023_group-38.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EpitechMscProPromo2023/T-WEB-800-T-WEB-800_msc2023_group-38/issues"
+  },
+  "homepage": "https://github.com/EpitechMscProPromo2023/T-WEB-800-T-WEB-800_msc2023_group-38#readme"
+}
