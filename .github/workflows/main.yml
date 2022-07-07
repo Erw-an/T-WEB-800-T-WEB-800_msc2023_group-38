@@ -87,9 +87,9 @@ jobs:
           machine api.heroku.com
             login $HEROKU_EMAIL
             password $HEROKU_API_KEY
+        EOF
         heroku git:remote -a road-triper
         git push heroku master
-        EOF
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         HEROKU_EMAIL: "taquet.erwan@gmx.fr"
