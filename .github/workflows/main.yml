@@ -1,4 +1,4 @@
-name: Deploy
+name: CI
 
 on:
   workflow_dispatch:
@@ -16,6 +16,44 @@ env:
 
 jobs:
       
+  test:
+      # The type of runner that the job will run on
+      runs-on: ubuntu-latest
+
+
+      services:
+        # Label used to access the service container
+        postgres:
+          # Docker Hub image
+          image: postgres:13
+          # Provide the envirronements for postgres
+          env:
+            POSTGRES_USER: eer-test
+            POSTGRES_PASSWORD: eer-test
+            POSTGRES_DB: eer-test
+          # Set health checks to wait until postgres has started
+          options: >-
+            --health-cmd pg_isready
+            --health-interval 10s
+            --health-timeout 5s
+            --health-retries 5
+      # Steps represent a sequence of tasks that will be executed as part of the job
+      steps:
+        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+        - uses: actions/checkout@v3
+
+        # start test e2e
+        - name: test e2e
+          run: |
+            cd api
+            yarn install
+            yarn test:e2e
+        # start test cov
+        - name: test cov
+          run: |
+            cd api
+            yarn install
+            yarn run test:cov
   deploy:
     name: Deploy to Heroku
     runs-on: ubuntu-18.04
@@ -32,14 +70,10 @@ jobs:
     - name:  build front
       run: |
         yarn build:front:lin
-
     - name: Heroku login credentials
       run: |
         cat > ~/.netrc <<EOF
           machine api.heroku.com
-            login $HEROKU_EMAIL
-            password $HEROKU_API_KEY
-          machine git.heroku.com
             login $HEROKU_EMAIL
             password $HEROKU_API_KEY
         EOF
@@ -49,53 +83,13 @@ jobs:
     # Push the Docker image to Heroku Container Registry
     - name: Deploy
       run: |
+        cat > ~/.netrc <<EOF
+          machine api.heroku.com
+            login $HEROKU_EMAIL
+            password $HEROKU_API_KEY
         heroku git:remote -a road-triper
-        git push heroku deploy:master
-name: Test
-      - dev
-      - feature/*
-  pull_request:
-    branches: 
-      - master
-      
-jobs:
-  # This workflow contains a single job called "build"
-  test:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-
-    services:
-      # Label used to access the service container
-      postgres:
-        # Docker Hub image
-        image: postgres:13
-        # Provide the envirronements for postgres
-        env:
-          POSTGRES_USER: eer-test
-          POSTGRES_PASSWORD: eer-test
-          POSTGRES_DB: eer-test
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-  
-      # start test e2e
-      - name: test e2e
-        run: |
-          cd api
-          yarn install
-          yarn test:e2e
-
-      # start test cov
-      - name: test cov
-        run: |
-          cd api
-          yarn install
-          yarn run test:cov
+        git push heroku master
+        EOF
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        HEROKU_EMAIL: "taquet.erwan@gmx.fr"
